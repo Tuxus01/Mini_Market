@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+
+
+<!--URL de navegacion inferior al navbar-->
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">MiniMarket</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Reporte</li>
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+
+ <form type="GET" action=".">
+<div class="card shadow lg p-1 mb-5 bg-white rounded">
+        <div class="card-header text-white bg-dark mb-3">
+            <h3 class="card-title "> Reportes de Compra Venta</h3>
+        </div>
+        <div class="card-body"> 
+            <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                <div class="row">
+                    <div class="col-lg-2 col-sm-12">
+                        <label for="exampleInputEmail1" class="bmd-label-static">Fecha Inicio</label>
+                       
+                        <span class="bmd-help">Seleccion la fecha inicial del reporte</span>
+
+                        <input id="fecha_inicio" type="date" name="fecha_inicio" value="{{fecha_inicio}}" class="form-control">
+                    </div>
+                    <div class="col-lg-2 col-sm-12">
+                        <label for="exampleInputEmail1" class="bmd-label-static">Fecha Final</label>
+                        <input type="date"  class="form-control" id="fecha_final" name="fecha_final" value="{{fecha_final}}"placeholder="Fechas ">
+                        <span class="bmd-help">Seleccion la fecha final del reporte</span>
+                    </div>
+                    <div class="col-lg-2 col-sm-12">
+                        <label for="exampleSelect1" class="bmd-label-floating">Tipo De reporte</label> 
+                        <select class="form-control" id="selec_reporte" name="selec_reporte">
+                            <option>1. Compras</option>
+                            <option>2. Ventas</option>
+                            <option>3. Todo</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1 col-sm-12">
+                        <button type="submit" class="btn btn-success btn-lg btn-block active">Buscar</button>
+                    </div>
+               
+                </div>
+                </div>
+
+
+
+                <div class="col-lg-6 col-sm-12">
+                {% if compras %}
+                <br>
+                    <table id="example1" class="table table-sm table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Creador</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">ISV</th>
+                        <th scope="col">Sub Total</th>
+                        <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in compras %}
+                        <tr>
+                        <th scope="row"><a href="{% url 'base:update' 'Compras' i.id %}">{{ i.codigo }}</a></th>
+                        <td>{{ i.owner }}</td>
+                        <td>{{ i.date_create }}</td>
+                        <td>{{ i.isv |floatformat:2|intcomma}}</td>
+                        <td>{{ i.subtotal|floatformat:2|intcomma }}</td>
+                        <td>{{ i.total|floatformat:2|intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                    <table class="table table-sm  table-striped table-dark">
+                        <th>Total : </th>
+                        <td>{{ totalc|floatformat:2|intcomma  }}</td>
+                    </table>
+                {% endif %}
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    {% if compras %}
+                    <div class="card text-white  mb-3">
+                        <div class="card-body">
+                            <canvas id="bar-chartc" width="800" height="450"></canvas>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+
+
+                <div class="col-lg-6 col-sm-12">
+                    {% if ventas %}
+                    <br>
+                    <table id="example2" class="table table-sm table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Creador</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">ISV</th>
+                        <th scope="col">Sub Total</th>
+                        <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in ventas %}
+                        <tr>
+                        <th scope="row"><a href="{% url 'base:update' 'Ventas' i.id %}">{{ i.codigo }}</a></th>
+                        <td>{{ i.owner }}</td>
+                        <td>{{ i.date_create }}</td>
+                        <td>{{ i.isv|floatformat:2|intcomma }}</td>
+                        <td>{{ i.subtotal|floatformat:2|intcomma }}</td>
+                        <td>{{ i.total|floatformat:2|intcomma  }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                    <table class="table table-sm  table-striped table-dark">
+                        <th>Total : </th>
+                        <td>{{ totalv|floatformat:2|intcomma }}</td>
+                    </table>
+                {% endif %}
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                     {% if ventas %}
+                    <div class="card text-white  mb-3">
+                        <div class="card-body">
+                            <canvas id="bar-chartv" width="800" height="450"></canvas>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+</div>
+
+</form>
+
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/af-2.3.4/fc-3.3.0/fh-3.1.6/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/af-2.3.4/fc-3.3.0/fh-3.1.6/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.js"></script>
+
+
+
+<script>
+
+  $(function () {
+ $('#example1').DataTable({
+        order: [[ 2, "desc" ]],
+        responsive: true,
+        autoWidth: false,
+        destroy: true,
+        deferRender: true,
+        searching: true,
+        paging: true,
+    });
+});
+</script>
+
+
+<script>
+
+  $(function () {
+ $('#example2').DataTable({
+        order: [[ 2, "desc" ]],
+        responsive: true,
+        autoWidth: false,
+        destroy: true,
+        deferRender: true,
+        searching: true,
+        paging: true,
+    });
+});
+</script>
+
+
+<script>
+new Chart(document.getElementById("bar-chartc"), {
+
+    type: 'line',
+
+
+
+    data: {
+ 
+      labels: [{% for i in compras %}  {% if i.total > 0 %}new Intl.NumberFormat("en-IN").format({{ i.total|floatformat:0}}), {% endif %}{% endfor %}],
+       
+      datasets: [
+        {
+          //label: "Population (millions)",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+        
+          data: [{% for i in compras %} {% if i.total > 0 %} {{ i.total|floatformat:0 }}, {% endif %} {% endfor %}]
+         
+
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Total:'
+      }
+    }
+});
+</script>
+
+
+
+<script>
+new Chart(document.getElementById("bar-chartv"), {
+
+    type: 'line',
+   
+
+    data: {
+       
+      labels: [{% for i in ventas %}  {% if i.total > 0 %}new Intl.NumberFormat("en-IN").format({{ i.total|floatformat:0  }}), {% endif %}{% endfor %}],
+     
+      datasets: [
+        {
+          //label: "Population (millions)",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+         
+          data: [{% for i in ventas %} {% if i.total > 0 %} {{ i.total|floatformat:0 }}, {% else %} {% endif %}{% endfor %}]
+      
+
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Total:'
+      }
+    }
+});
+</script>
+{% endblock %}

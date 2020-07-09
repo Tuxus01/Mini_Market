@@ -1,0 +1,295 @@
+{% extends 'base_store.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+
+{% block head %}
+<!--<link rel="stylesheet" type="text/css" href="{% static '/Img_store/style.css'%}">-->
+
+<style>
+#content-wrapper{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.column{
+	width: 600px;
+	padding: 1px;
+
+}
+
+#featured{
+	max-width: 500px;
+	max-height: 600px;
+	object-fit: cover;
+	cursor: pointer;
+	border: 2px solid black;
+
+}
+
+.thumbnail{
+	object-fit: cover;
+	max-width: 180px;
+	max-height: 100px;
+	cursor: pointer;
+	opacity: 0.5;
+	margin: 5px;
+	border: 2px solid black;
+
+}
+
+.thumbnail:hover{
+	opacity:1;
+}
+
+.active{
+	opacity: 1;
+}
+
+#slide-wrapper{
+	max-width: 500px;
+	display: flex;
+	min-height: 100px;
+	align-items: center;
+}
+
+#slider{
+	width: 440px;
+	display: flex;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+
+}
+
+#slider::-webkit-scrollbar {
+		width: 8px;
+
+}
+
+#slider::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+
+}
+ 
+#slider::-webkit-scrollbar-thumb {
+  background-color: #dede2e;
+  outline: 1px solid slategrey;
+   border-radius: 100px;
+
+}
+
+#slider::-webkit-scrollbar-thumb:hover{
+    background-color: #18b5ce;
+}
+
+.arrow{
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	transition: .3s;
+}
+
+.arrow:hover{
+	opacity: .5;
+	width: 35px;
+	height: 35px;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="row p-lg-2 justify-content-md-center">
+    <div class="col-lg-8 col-sm-12 ">
+
+        <div id="content-wrapper">
+            <div class="column">
+                <div id="slide-wrapper" >
+                    
+                    <img id="slideLeft" class="arrow" src="{% static '/Img_store/arrow-left.png' %}" >
+                    
+                    <div id="slider">
+                        {% if DETALLE.imagen %}
+                            <img class="thumbnail active" src="/{{ DETALLE.imagen }}"  >
+                        {% endif %}
+                        {% if DETALLE.imagen2 %}
+                            <img class="thumbnail" src="/{{ DETALLE.imagen2 }}" >
+                        {% endif %}
+                        {% if DETALLE.imagen3 %}
+                            <img class="thumbnail" src="/{{ DETALLE.imagen3 }}" >
+                        {% endif %}
+                        {% if DETALLE.imagen4 %}
+                            <img class="thumbnail" src="/{{ DETALLE.imagen4 }}">
+                        {% endif %}
+                        {% if DETALLE.imagen5 %}
+                            <img class="thumbnail" src="/{{ DETALLE.imagen5 }}">
+                        {% endif %}
+                        {% if DETALLE.imagen6 %}
+                            <img class="thumbnail" src="/{{ DETALLE.imagen6 }}">
+                        {% endif %}
+                       
+                    </div>
+
+                    <img id="slideRight" class="arrow" src="{% static '/Img_store/arrow-right.png' %}" >
+                </div>
+                
+                <!--Imagen Inicial-->
+                {% if DETALLE.imagen %}
+                <img id="featured" src="/{{ DETALLE.imagen }}" width="600" height="600">
+                {% endif %}
+            </div>
+       
+            <div class="column">
+                <h1>{{ DETALLE.nombre }}</h1>
+                <hr>
+                <h3>L.{{ DETALLE.pre_venta|floatformat:2|intcomma  }}</h3>
+
+                <p>{{ DETALLE.descripcion }}</p>
+                <p><h4>Disponibles : <span class="badge badge-success">{{ DETALLE.stock_actual|floatformat:0|intcomma  }}</span> </h4></p>
+                 {% if DETALLE.subcategoria %}
+                    <h6>Sub Categoria : <span class="badge badge-success">{{ DETALLE.subcategoria }}</span> </h6>
+                {% endif %}
+                {% if DETALLE.talla %}
+                    <h6>Talla : <span class="badge badge-success">{{ DETALLE.talla }}</span> </h6>
+                {% endif %}
+               
+                {% if DETALLE.subcategoria %}
+                    <h6>Color : <span class="badge badge-success">{{ DETALLE.color }}</span> </h6>
+                {% endif %}
+                <div class="row">
+                    <div class="col">
+                        <input value=1 type="number" class="form-control">
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-dark active" href="#">Agregar Al Carrito</a>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+
+
+    </div>
+
+
+    <!--Area para pagos individual-->
+    <div class="col-lg-3 col-sm-12 card">
+        <br>
+        <h3>{{ DETALLE.nombre }}</h3>
+        <hr>
+        <h4>Total: L. {{ DETALLE.pre_venta|floatformat:2|intcomma  }}</h4>
+        <hr>
+        <div id="paypal-button-container"></div>
+    </div>
+    <!--Area para pagos individual-->
+
+
+</div>
+
+
+<div class="row p-lg-5 justify-content-md-center">
+    <div class="col-lg-10">
+        <div class="row ">
+            <div class="col-1">
+                <img src="https://payaraoutdoors.com/wp-content/uploads/2018/04/TS1092_Lagoon.png"  width="100" height="100" alt="..." class="rounded-circle border border-success">
+            </div>
+            <div class="col-10 card rounded border border-success">
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Comentario</label>
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                        <div class="col-lg-2">
+                            <a class="btn btn-success active btn-block" href="#">Enviar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row  justify-content-md-center">
+    <div class="col-lg-8 card">
+        <p class="font-weight-bold">Bold text.</p>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block script %}
+
+<script
+    src="https://www.paypal.com/sdk/js?client-id=ARA3Z_RRJi1mLxT2AfYNp4ozoYeRGQO2ngo23TxgV3bzQ0FqNHopCjyoDxCOXAueYDQYdIQUgR7L1Hfe"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+</script>
+
+<script>
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      // This function sets up the details of the transaction, including the amount and line item details.
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '0.01'
+          }
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      // This function captures the funds from the transaction.
+      return actions.order.capture().then(function(details) {
+        // This function shows a transaction success message to your buyer.
+        alert('Transaction completed by ' + details.payer.name.given_name);
+      });
+    }
+  }).render('#paypal-button-container');
+  //This function displays Smart Payment Buttons on your web page.
+</script>
+
+
+<script type="text/javascript">
+		let thumbnails = document.getElementsByClassName('thumbnail')
+
+		let activeImages = document.getElementsByClassName('active')
+
+		for (var i=0; i < thumbnails.length; i++){
+
+			thumbnails[i].addEventListener('mouseover', function(){
+				console.log(activeImages)
+				
+				if (activeImages.length > 0){
+					activeImages[0].classList.remove('active')
+				}
+				
+
+				this.classList.add('active')
+				document.getElementById('featured').src = this.src
+			})
+		}
+
+
+		let buttonRight = document.getElementById('slideRight');
+		let buttonLeft = document.getElementById('slideLeft');
+
+		buttonLeft.addEventListener('click', function(){
+			document.getElementById('slider').scrollLeft -= 180
+		})
+
+		buttonRight.addEventListener('click', function(){
+			document.getElementById('slider').scrollLeft += 180
+		})
+
+
+	</script>
+{% endblock %}

@@ -1,0 +1,138 @@
+
+{% extends 'table.html' %}
+{% load static %}
+
+
+<!--URL de navegacion inferior al navbar-->
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">MiniMarket</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ TABLENAME }}</li>
+{% endblock %}
+
+<!--Bloque Table Bootstrap Datatable -->
+<!--URL Add New Item-->
+{% block urlAdd %}'{% url 'base:create'  Add %}'{% endblock %}
+<!--URL Add New Item-->
+{% block thead  %}
+<tr>
+  <!--ITeracion de Arreglo de Titulos -->
+  {% for th in TH%}
+    <th>{{ th.name }}</th>
+  {% endfor %}
+</tr>
+<!--Carga de Contenido en tabla por medio de JavaScritp-->
+{% endblock %}
+             
+{% block tbody %}
+{% endblock %}
+
+<!--Carga de Datos de Tabla de forma automatica-->
+{% block script %}
+
+<!--Datatable-->
+<!--
+<link rel="stylesheet" type="text/css" href="{% static 'js/DataTables/datatables.min.css' %}"/>
+<script type="text/javascript" src="{% static 'js/DataTables/datatables.min.js' %}"></script>-->
+
+<!--<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>-->
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/af-2.3.4/fc-3.3.0/fh-3.1.6/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/af-2.3.4/fc-3.3.0/fh-3.1.6/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.js"></script>
+
+
+<script>
+model = "{{ Add }}"
+var ruta = "{{ Add }}";
+</script>
+
+
+<!--Datatable-->
+
+
+
+
+
+<script>
+
+  $(function () {
+ $('#example1').DataTable({
+        order: [[ 0, "desc" ]],
+        responsive: true,
+        autoWidth: false,
+        destroy: true,
+        deferRender: true,
+        searching: true,
+        paging: true,
+        ajax: {
+            //url: window.location.pathname,
+            url: window.location.pathname,
+            type: 'POST',
+            data: {
+                'action': 'searchdata'
+            },
+            dataSrc: ""
+        },
+        columns: [
+            //Iteracion de Campos a rellenar en tablas 
+            {% for c in AJAXD %}
+                {"data": "{{ c.data }}" },
+            {% endfor %}
+
+        ],
+        columnDefs: [
+            {
+                targets: [-1],
+                class: 'text-center',
+                orderable: false,
+                render: function (data, type, row) {
+
+                    var buttons = '<a href="/base/'+ model +'/' + row.id + '/update/"><i class="fa fa-pencil" aria-hidden="true" ></i></a> ';
+                    buttons += ' <a href="javascript:;" onclick="ELiminar('+ row.id +')"><i class="fa fa-trash" style="color:red"></i></a>';
+                    return buttons;
+                }
+            },
+        ],
+        initComplete: function (settings, json) {
+            
+        }
+    });
+  });
+</script>
+
+
+<script>
+
+function ELiminar(id){
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "the object " + id   +" will be deleted ",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      Swal.fire(
+        'Deleted!',
+        'Your file has been deleted.' ,
+        'success',
+        window.location.href='/base/'+ model +'/'+ id + '/delete/',
+      )
+    }
+  })
+}
+</script>
+
+
+
+  {% endblock %}
+{% block InfoScript %}
+
+{% endblock %}
+

@@ -1,0 +1,260 @@
+{% extends 'base_store.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+
+
+{% block contentShop %}
+
+
+<div class="shop_sidebar_area">
+
+           
+            <form type="GET" action=".">
+            <!-- ##### Single Widget ##### -->
+            <div class="widget brands mb-50">
+                <!-- Widget Title -->
+                <h6 class="widget-title mb-30">Departamento</h6>
+
+                <div class="widget-desc">
+
+                        {% for i in SUBCATEGORIA%}
+                            {% if CHECK %}
+                                {% for c in CHECK %}
+                                    {% if c.tipo == "subcategoria" %}
+                                    {% if c.nombre == i.nombre%}
+                                        <!-- Single Form Check -->
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" checked id="{{ i.id }}" name="{{ i.nombre }}" value="{{ i.nombre }}">
+                                            <label class="form-check-label" for="{{ i.id }}">{{ i.nombre }}</label>
+                                        </div><br>
+                                    {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="{{ i.id }}" name="{{ i.nombre }}" value="{{ i.nombre }}">
+                                    <label class="form-check-label" for="{{ i.id }}">{{ i.nombre }}</label>
+                                </div><br>
+                            {% endif %}
+                        {% endfor  %}
+                
+
+                
+                   
+                  
+                </div>
+            </div>
+
+            <div class="widget brands mb-50">
+                <!-- Widget Title -->
+                <h6 class="widget-title mb-30">Tallas</h6>
+
+                <div class="widget-desc">
+
+
+                    {% for i in TALLA%}
+                            {% if CHECK %}
+                                {% for c in CHECK %}
+                                    {% if c.tipo == "talla" %}
+                                    {% if c.nombre == i.nombre %}
+                                    
+                                    <!-- Single Form Check -->
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" checked id="{{ i.id }}" name="{{ i.nombre }}" value="{{ i.nombre }}">
+                                        <label class="form-check-label" for="{{ i.id }}">{{ i.nombre }}</label>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="{{ i.id }}" name="{{ i.nombre }}" value="{{ i.nombre }}">
+                                    <label class="form-check-label" for="{{ i.id }}">{{ i.nombre }}</label>
+                                </div><br>
+                            {% endif %}
+                        {% endfor  %}
+                
+                   
+            
+                   
+                </div>
+            </div>
+
+
+
+
+            <!-- ##### Single Widget ##### -->
+            <div class="widget brands mb-50">
+                <!-- Widget Title -->
+                <h6 class="widget-title mb-30">Categoria</h6>
+
+                <div class="widget-desc">
+
+                        {% if CHECK %}
+                            {% for i in CHECK%}
+                                {% if i.tipo == "categoria" and i.check == "si"%}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" checked id="{{ i.id }}" name="{{ i.nombre }}" value="{{ i.nombre }}">
+                                    <label class="form-check-label" for="{{ i.id }}">{{ i.nombre }}</label>
+                                </div><br>
+
+
+                                {% endif %}
+                            {% endfor %}
+
+                            
+
+                        {% else %}
+                            {% for i in CATEGORIA%}
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="{{ i.id }}" name="{{ i.nombre }}" value="{{ i.nombre }}">
+                                        <label class="form-check-label" for="{{ i.id }}">{{ i.nombre }}</label>
+                                    </div><br>
+                            {% endfor  %}
+                        {% endif %}
+                
+
+
+                 
+
+                    
+                     
+                        <button type="submit"  class="btn btn-primary">Buscar Categoria</button>
+                    
+                </div>
+            </div>
+
+            </from>
+          
+           
+        </div>
+
+        <div class="amado_product_area section-padding-100">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="product-topbar d-xl-flex align-items-end justify-content-between">
+                            <!-- Total Products -->
+                            <div class="total-products">
+                                <p>Pagina {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</p>
+                               
+                            </div>
+                            <!-- Sorting 
+                            <div class="product-sorting d-flex">
+                                <div class="sort-by-date d-flex align-items-center mr-15">
+                                    <p>Sort by</p>
+                                    <form action="#" method="get">
+                                        <select name="select" id="sortBydate">
+                                            <option value="value">Date</option>
+                                            <option value="value">Newest</option>
+                                            <option value="value">Popular</option>
+                                        </select>
+                                    </form>
+                                </div>
+                                <div class="view-product d-flex align-items-center">
+                                    <p>View</p>
+                                    <form action="#" method="get">
+                                        <select name="select" id="viewProduct">
+                                            <option value="value">12</option>
+                                            <option value="value">24</option>
+                                            <option value="value">48</option>
+                                            <option value="value">96</option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>-->
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    {% for DETALLE in page_obj %}
+                    <!-- Single Product Area -->
+                    <div class="col-12 col-sm-6 col-md-12 col-xl-6 ">
+                        <div class="single-product-wrapper">
+                            <!-- Product Image -->
+                            <div class="product-img">
+                                {% if DETALLE.imagen %}
+                                <img src="/{{ DETALLE.imagen }}" alt="">
+                                {% endif %}
+                                <!-- Hover Thumb -->
+                                {% if DETALLE.imagen2%}
+                                <img class="hover-img" src="/{{ DETALLE.imagen2 }}" alt="">
+                                {% endif %}
+                            </div>
+
+                            <!-- Product Description -->
+                            <div class="product-description d-flex align-items-center justify-content-between">
+                                <!-- Product Meta Data -->
+                                <div class="product-meta-data">
+                                    <div class="line"></div>
+                                    <p class="product-price">L. {{DETALLE.pre_venta|floatformat:2|intcomma  }}</p>
+                                    <a href="{% url 'base:store_id' DETALLE.id %}">
+                                        <h6>{{ DETALLE.nombre }}</h6>
+                                    </a>
+                                </div>
+                                <!-- Ratings & Cart -->
+                                <div class="ratings-cart text-right">
+                                    <div class="ratings">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="cart">
+                                        <a href="#" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="{% static 'amado/img/core-img/cart.png' %}" alt=""></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+
+
+                  
+                </div>
+
+
+                <div class="row">
+                    <div class="col-12">
+                        
+                        <!-- Pagination -->
+                        <nav aria-label="navigation">
+                            <ul class="pagination justify-content-end mt-50">
+                               
+                        
+                                {% if page_obj.has_previous %}
+                                    <!--<li class="page-item"><a class="page-link" href="?page=1">Incio</a></li>-->
+                                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"> Back </a></li>
+                                {% endif %}
+                                
+                                
+                                {% if page_obj.has_next %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}"> Next </a></li>
+                                    <!--<li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last</a></li>-->
+                                {% endif %}
+
+                                
+                               
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+
+
+
+{% block script %}
+
+
+{% endblock %}

@@ -1,0 +1,104 @@
+
+{% extends 'CobrosTable.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+
+
+<!--URL de navegacion inferior al navbar-->
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">MiniMarket</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Lista Cobros</li>
+{% endblock %}
+
+<!--Bloque Table Bootstrap Datatable -->
+<!--URL Add New Item-->
+{% block urlAdd %}{% endblock %}
+<!--URL Add New Item-->
+{% block thead  %}
+<tr>
+  <!--ITeracion de Arreglo de Titulos -->
+  
+<th>Id</th>
+<th>Identidad</th>
+<th>Nombre</th>
+<th>Apellido</th>
+<th>Ventas</th>
+<th>Abonos</th>
+<th>Restantes</th>
+<th>Accion</th>
+  
+</tr>
+<!--Carga de Contenido en tabla por medio de JavaScritp-->
+{% endblock %}
+             
+{% block tbody %}
+
+{% for i in DATOS %}
+<tr>
+<td>{{ i.id }}</td>
+<td>{{ i.identidad }}</td>
+<td>{{ i.nombre }}</td>
+<td>{{ i.apellidos }}</td>
+<td class="table-danger">Lps. {{ i.ventas|floatformat:2|intcomma }}</td>
+<td class="table-primary">Lps. {{ i.abono|floatformat:2|intcomma }}</td>
+<td class="table-success">Lps. {{ i.restante|floatformat:2|intcomma }} </td>
+<td>
+<a class="btn btn-success btn-block btn-sm active" href="{% url 'base:abonos' i.id %}"><i class="fa fa-pencil" aria-hidden="true" ></i></a>
+</td>
+</tr>
+{% endfor %}
+
+
+{% endblock %}
+
+<!--Carga de Datos de Tabla de forma automatica-->
+{% block script %}
+
+<!--Datatable-->
+<!--
+<link rel="stylesheet" type="text/css" href="{% static 'js/DataTables/datatables.min.css' %}"/>
+<script type="text/javascript" src="{% static 'js/DataTables/datatables.min.js' %}"></script>-->
+
+<!--<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>-->
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/af-2.3.4/fc-3.3.0/fh-3.1.6/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/af-2.3.4/fc-3.3.0/fh-3.1.6/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.js"></script>
+
+
+<script>
+model = "{{ Add }}"
+var ruta = "{{ Add }}";
+</script>
+
+
+<!--Datatable-->
+
+<script>
+
+  $(function () {
+ $('#example1').DataTable({
+        order: [[ 1, "desc" ]],
+        responsive: true,
+        autoWidth: false,
+        destroy: true,
+        deferRender: true,
+        searching: true,
+        paging: true,
+        
+    });
+  });
+</script>
+
+
+
+  {% endblock %}
+{% block InfoScript %}
+
+{% endblock %}
+

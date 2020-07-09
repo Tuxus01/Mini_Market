@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!--tabla -->
+    <div class="card shadow lg p-1 mb-5 bg-white rounded">
+        <div class="card-header text-white bg-dark mb-3">
+            <h3 class="card-title ">{{ TABLENAME }} </h3>
+        </div>
+                <!-- /.card-header -->
+        <div class="card-body"> 
+        <table id="example1" class="table table-sm table-striped" style="width:100%">
+            <caption> {{ TABLENAME}} </caption>
+            <thead class="thead-dark">
+                {% block thead  %}
+                {% endblock %}
+            </thead>
+            <tbody>
+                {% block tbody %}
+                {% endblock %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+    
+{% endblock %}
+
+
+{% block script %}
+
+
+
+
+{% block InfoScript %}
+
+{% endblock %}
+
+{% endblock %}

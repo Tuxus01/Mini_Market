@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+
+
+{% block content %}
+
+<style>
+.hero-widget { text-align: center; padding-top: 20px; padding-bottom: 20px; }
+.hero-widget .icon { display: block; font-size: 96px; line-height: 96px; margin-bottom: 10px; text-align: center; }
+.hero-widget var { display: block; height: 64px; font-size: 64px; line-height: 64px; font-style: normal; }
+.hero-widget label { font-size: 17px; }
+.hero-widget .options { margin-top: 10px; }
+.hero-widget var2 { display: block; height: 34px; font-size: 34px; line-height: 34px; font-style: normal; }
+
+</style>
+<div class="container">
+	<div class="row border-success border rounded">
+
+		<div class="col-sm-4 ">
+    	    <div class="hero-widget well well-sm">
+                <div class="icon">
+                     <i class="fa fa-users"></i>
+                </div>
+                <div class="text">
+                    <var>{{CLIENTES_TOTAL}}</var>
+                    <label class="text-muted">Clientes</label>
+                    <var2> <span class="badge badge-pill badge-primary">Lps. {{CLIENTE_VENTA|floatformat:2|intcomma}} </span></var2>
+                </div>
+                <div class="options">
+                    <a href="{% url 'base:list' 'Cliente' %}" class="btn btn-primary btn-lg active"><i class="fa fa-list"></i> Clientes</a>
+                </div>
+            </div>
+		</div>
+
+        
+        <div class="col-sm-4">
+    	    <div class="hero-widget well well-sm">
+                <div class="icon">
+                     <i class="fa fa-id-card-o"></i>
+                </div>
+                <div class="text">
+                    <var>{{PROVEEDOR_TOTAL}}</var>
+                    <label class="text-muted">Proveedores</label>
+                    <var2> <span class="badge badge-pill badge-primary">Lps. {{PROVEEDOR_COMPRA|floatformat:2|intcomma}} </span></var2>
+                </div>
+                <div class="options">
+                    <a href="{% url 'base:list' 'Proveedores' %}" class="btn btn-primary btn-lg active"><i class="fa fa-list"></i> Proveedores</a>
+                </div>
+            </div>
+		</div>
+
+
+
+        <div class="col-sm-4 ">
+    	    <div class="hero-widget well well-sm">
+                <div class="icon">
+                     <i class="fa fa-dollar"></i>
+                </div>
+                <div class="text">
+                    <var>{{CLIENTES_COBROS}}</var>
+                    <label class="text-muted">Ventas al Credito</label>
+                    <var2> <span class="badge badge-pill badge-primary">Lps. {{CLIENTES_COBROS_TOTAL|floatformat:2|intcomma}}</span></var2>
+                </div>
+                <div class="options">
+                    <a href="{% url 'base:cobros-list'  %}" class="btn btn-primary btn-lg active"><i class="fa fa-list"></i> Lista Cobros </a>
+                </div>
+            </div>
+		</div>
+
+
+
+        
+
+	</div>
+</div>
+<br>
+
+<!--Graficas -->
+<div class="row"> 
+    <div class="col-lg-6">
+        <div id="chart_ventas_semanales" style="width: 100%; height: 500px;"></div>
+    </div>
+
+    <div class="col-lg-6">
+        <div id="chart_compras_semanales" style="width: 100%; height: 500px;"></div>
+    </div>
+</div>
+<!--Graficas -->
+
+<!--Tablas -->
+<div class="row"> 
+    <div class="col-lg-6">
+     
+    </div>
+
+    <div class="col-lg-6">
+       
+    </div>
+</div>
+<!--Tab;as -->
+
+
+{% endblock %}
+
+{% block script %}
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Dia', 'Actual', 'Pasada'],
+          {% for i in VENTAS_SEMANALES %}
+          ['********',   {{ i.ayer7C|floatformat:0  }},      {{ i.ayer15C|floatformat:0}}],
+          ['*******',   {{ i.ayer6C|floatformat:0  }},      {{ i.ayer14C|floatformat:0}}],
+          ['******',   {{ i.ayer5C|floatformat:0  }},      {{ i.ayer13C|floatformat:0}}],
+          ['*****',   {{ i.ayer4C|floatformat:0  }},      {{ i.ayer12C|floatformat:0}}],
+          ['****',   {{ i.ayer3C|floatformat:0  }},      {{ i.ayer11C|floatformat:0}}],
+          ['***',   {{ i.ayer2C|floatformat:0  }},      {{ i.ayer10C|floatformat:0}}],
+          ['**',   {{ i.ayer1C|floatformat:0  }},      {{ i.ayer9C|floatformat:0}}],
+          ['*',   {{ i.ahoraC|floatformat:0  }},      {{ i.ayer8C|floatformat:0}}],
+          {% endfor %}
+        ]);
+
+        var options = {
+          title: 'Ventas Semanales',
+          hAxis: {title: 'Dias',  titleTextStyle: {color: '#444'}},
+          vAxis: {minValue: 2}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_ventas_semanales'));
+        chart.draw(data, options);
+      }
+    </script>
+
+
+
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Dia', 'Actual', 'Pasada'],
+          {% for i in COMPRAS_SEMANALES %}
+          ['********',   {{ i.ayer7CC|floatformat:0  }},      {{ i.ayer15CC|floatformat:0}}],
+          ['*******',   {{ i.ayer6CC|floatformat:0  }},      {{ i.ayer14CC|floatformat:0}}],
+          ['******',   {{ i.ayer5CC|floatformat:0  }},      {{ i.ayer13CC|floatformat:0}}],
+          ['*****',   {{ i.ayer4CC|floatformat:0  }},      {{ i.ayer12CC|floatformat:0}}],
+          ['****',   {{ i.ayer3CC|floatformat:0  }},      {{ i.ayer11CC|floatformat:0}}],
+          ['***',   {{ i.ayer2CC|floatformat:0  }},      {{ i.ayer10CC|floatformat:0}}],
+          ['**',   {{ i.ayer1CC|floatformat:0  }},      {{ i.ayer9CC|floatformat:0}}],
+          ['*',   {{ i.ahoraCC|floatformat:0  }},      {{ i.ayer8CC|floatformat:0}}],
+          {% endfor %}
+        ]);
+
+        var options = {
+          title: 'Compras Semanales',
+          hAxis: {title: 'Dia',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_compras_semanales'));
+        chart.draw(data, options);
+      }
+    </script>
+
+
+{% endblock %}

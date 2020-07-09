@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+ <div class="row shadow lg p-1 mb-5 bg-white rounded">
+    <div class="col-lg-4 col-sm-12">
+        <div class="card shadow lg p-1 mb-5 bg-white rounded">
+            <div class="card-header text-white bg-dark mb-3">
+                <h3 class="card-title ">Datos Del Objeto</h3>
+            </div>
+                    <!-- /.card-header -->
+                <div class="card-body">
+                <!--BLoque para cargar formulario -->
+                {% block form %}
+                {% endblock %}
+                </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8 col-sm-12">
+        <div class="card shadow lg p-1 mb-5 bg-white rounded">
+            <div class="card-header text-white bg-success mb-3">
+                <h3 class="card-title ">Informacion Adicional</h3>
+            </div>
+                    <!-- /.card-header -->
+                <div class="card-body">
+                <!--BLoque para cargar formulario -->
+                {% block DatosAdicional %}
+                {% endblock %}
+                </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+

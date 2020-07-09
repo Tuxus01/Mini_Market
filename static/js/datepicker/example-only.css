@@ -1,0 +1,84 @@
+body {
+  background: #E73140;
+  color: #FDFAF7;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.example {
+  margin-top: 5rem;
+}
+.example .input-label {
+  font-size: 1.1rem;
+  color: #FDFAF7;
+}
+.example input[type=text] {
+  border-color: #FDFAF7;
+  padding-bottom: 6px;
+  margin-bottom: 2rem;
+  width: 55%;
+  max-width: 380px;
+  border: none;
+  border-radius: 4px;
+  padding: 11px;
+  color: #E73140;
+  font-size: 21px;
+}
+.example .btn {
+  height: 50px;
+  line-height: 22px;
+  width: 55%;
+  max-width: 380px;
+  padding: 0 6px;
+  font-size: 1.7rem;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  background: #333333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 11px;
+  cursor: pointer;
+  transition: background-color .4s ease-out;
+}
+.example .btn:hover {
+  background: #464646;
+}
+.example ::-webkit-input-placeholder {
+  color: #F4A0A0;
+}
+.example :-moz-placeholder {
+  color: #F4A0A0;
+}
+.example ::-moz-placeholder {
+  color: #F4A0A0;
+}
+.example :-ms-input-placeholder {
+  color: #F4A0A0;
+}
+.example .switch {
+  margin-bottom: 2rem;
+}
+.example .switch label {
+  font-size: 1.1rem;
+  color: #F4A0A0;
+  transition: color 1s ease-out;
+}
+.example .switch label .lever {
+  background-color: #FDFAF7;
+}
+.example .switch label .lever:after {
+  background-color: #FDFAF7;
+}

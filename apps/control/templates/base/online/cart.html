@@ -1,0 +1,71 @@
+{% extends 'base_store.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+
+
+{% block content %}
+
+<div class="cart-table-area section-padding-100">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <div class="cart-title mt-50">
+                            <h2>Carrito de Compras</h2>
+                        </div>
+
+                        <div class="cart-table clearfix">
+                            {% if ITEMS %}
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Nombre (Disponibles)</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in DETALLES %}
+                                    <tr>
+                                        <td class="cart_product_img">
+                                            <a href="#"><img src="/{{ i.componente.imagen }}" alt="Product"></a>
+                                        </td>
+                                        <td class="cart_product_desc">
+                                            <a href="{% url 'base:store_id' i.componente.id %}"><h5> {{ i.componente.nombre }} ( {{ i.componente.stock_actual|floatformat:2|intcomma }} )</h5></a>
+                                        </td>
+                                        <td class="price">
+                                            <span>L. {{ i.componente.pre_venta|floatformat:2|intcomma }} </span>
+                                        </td>
+
+                                        <td class="qty">
+                                            <span>{{ i.cantidad|floatformat:2|intcomma }} </span>
+                                        </td>
+                                        
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="cart-summary">
+                            <h5>Total </h5>
+                            <ul class="summary-table">
+                                <li><span>subtotal:</span> <span>L. {{ SUBTOTAL }}</span></li>
+                                <li><span>impuesto 15%:</span> <span>L. {{ ISV_15 }}</span></li>
+                                <li><span>impuesto 18%:</span> <span>L. {{ ISV_18 }}</span></li>
+                                <li><span>total:</span> <span>L. {{ TOTAL }}</span></li>
+                            </ul>
+                            <div class="cart-btn mt-100">
+                                <a href="{% url 'base:carrito_check' %}" class="btn amado-btn w-100">Revision Completada</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

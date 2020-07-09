@@ -1,0 +1,54 @@
+{% extends 'base_store.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+
+
+{% block content %}
+
+
+{% for i in Lista %}
+<!-- Single Catagory -->
+<div class="single-products-catagory clearfix">
+    <a href="{% url 'base:store_id' i.id %}">
+        <img src="/{{ i.imagen }}" alt="">
+    <!-- Hover Content -->
+    <div class="hover-content">
+        <div class="line"></div>
+       <h4 > <p  >L. {{ i.pre_venta|floatformat:0|intcomma }}</p></h4>
+        <h4 >{{ i.nombre }}</h4>
+     </div>
+    </a>
+</div>
+{% endfor %}
+       
+
+
+{% endblock %}
+
+
+
+{% block script %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+
+
+    <script>
+var app = new Vue({
+  delimiters: ['[[', ']]'],
+  el: '#app',
+  data: {
+      message: 'Hello Vue!',
+     
+  },
+  methods: {
+     
+  }
+});
+</script>
+
+{% endblock %}

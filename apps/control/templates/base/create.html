@@ -1,0 +1,310 @@
+{% extends 'form.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+{% load l10n %}
+
+
+<!--URL de navegacion inferior al navbar-->
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">MiniMarket</a></li>
+     <li class="breadcrumb-item"><a href="{% url 'base:list' lists %}"> {{ tablename }} </a></li>
+    <li class="breadcrumb-item active" aria-current="page">Form</li>
+{% endblock %}
+
+<!--Formulario -->
+{% block form %}
+
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success btn-block active">Guardar Cambios</button>
+        <a type="button" href="{% url 'base:list' lists %}" class="btn btn-danger btn-block active">Cancelar</a>
+    </form>
+
+{% endblock %}
+
+
+
+{% block DatosAdicional %}
+<!--Informacio adiconal por modelo -->
+
+<!--Presentacion Presentara tabla relacionada de componentes -->
+{% if lists == "Presentacion" or lists == "SubCategoria" or lists == "Color" or lists == "Talla"%}
+<table id="example1" class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Serie</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Categoria</th>
+      <th scope="col">Precio Venta</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in RELACION %}
+    <tr>
+      <th scope="row">{{ i.id }}</th>
+      <td><a href="{% url 'base:update' 'Componente' i.id %}">{{ i.serie}}</a></td>
+      <td>{{ i.nombre}}</td>
+      <td>{{ i.categoria}}</td>
+      <td>{{ i.pre_venta}}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table> 
+{% endif %}
+<!--Presentacion Presentara tabla relacionada de componentes -->
+
+
+
+<!--Presentacion Categoria tabla relacionada de componentes -->
+{% if lists == "Categoria"%}
+<table id="example1" class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Serie</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Categoria</th>
+      <th scope="col">Precio Venta</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in RELACION %}
+    <tr>
+      <th scope="row">{{ i.id }}</th>
+      <td><a href="{% url 'base:update' 'Componente' i.id %}">{{ i.serie}}</a></td>
+      <td>{{ i.nombre}}</td>
+      <td>{{ i.presentacion}}</td>
+      <td>{{ i.pre_venta}}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table> 
+{% endif %}
+<!--Presentacion Categoria tabla relacionada de componentes -->
+
+
+<!--Presentacion COmponente  -->
+{% if lists == "Componente"%}
+   <div class="row">
+        <div class="col-lg-6 col-sm-12">
+            <div class="alert alert-success rounded" role="alert">
+                <h3>Rentabilidad Inicial : {{ RENTABILIDAD|floatformat:2|intcomma  }}% </h3> 
+            </div>
+            
+            <div class="card text-white  mb-3">
+                <div class="card-body">
+                    <canvas id="bar-chartc" width="800" height="450"></canvas>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-lg-6 col-sm-12">
+            {% if RENTABILIDADGLOBAL > RENTABILIDAD %}
+            <div class="alert alert-success rounded" role="alert">
+            {% else %}
+            <div class="alert alert-danger rounded" role="alert">
+            {% endif %}
+                <h3>Rentabilidad Real : {{ RENTABILIDADGLOBAL|floatformat:2|intcomma }}% </h3> 
+            </div>
+
+             <div class="card text-white  mb-3">
+                <div class="card-body">
+                    <canvas id="bar-chartv" width="800" height="450"></canvas>
+                </div>
+            </div>
+
+        </div>
+   </div>
+
+ 
+{% endif %}
+<!--Presentacion COmponente -->
+
+
+<!-- Proveedores  -->
+{% if lists == "Proveedores"%}
+<table class="table table-sm">
+<th scope="col"><h4> Total Invertido : </h4> </th>
+<th scope="row"><h4> Lps.{{ TOTAL|floatformat:2|intcomma }}</h4></th>
+</table>
+<table id="example1" class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Codigo</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Pago</th>
+      <th scope="col">Usuario</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in COMPRAS %}
+    <tr>
+      <th scope="row">{{ i.id }}</th>
+      <td><a href="{% url 'base:update' 'Compras' i.id %}">{{ i.codigo}}</a></td>
+      <td>{{ i.date_create}}</td>
+      {% if i.pago == 1 %}
+      <td><span class="badge badge-pill badge-success">Efectivo</span></td>
+      {% endif %}
+      {% if i.pago == 2 %}
+      <td><span class="badge badge-pill badge-info">Credito</span></td>
+      {% endif %}
+      {% if i.pago == 3 %}
+      <td><span class="badge badge-pill badge-danger">Tarjeta</span></td>
+      {% endif %}
+      <td>{{ i.owner}}</td>
+      <td>{{ i.total|floatformat:2|intcomma }}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table> 
+
+
+{% endif %}
+<!-- Proveedores  -->
+
+
+
+<!-- Cliente  -->
+{% if lists == "Cliente"%}
+<table class="table table-sm">
+<th scope="col"><h4> Total Ventas : </h4> </th>
+<th scope="row"><h4> Lps.{{ TOTAL|floatformat:2|intcomma }}</h4></th>
+</table>
+<table id="example1" class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Codigo</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Pago</th>
+      <th scope="col">Usuario</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in VENTAS %}
+    <tr>
+      <th scope="row">{{ i.id }}</th>
+      <td><a href="{% url 'base:update' 'Ventas' i.id %}">{{ i.codigo}}</a></td>
+      <td>{{ i.date_create}}</td>
+      {% if i.pago == 1 %}
+      <td><span class="badge badge-pill badge-success">Efectivo</span></td>
+      {% endif %}
+      {% if i.pago == 2 %}
+      <td><span class="badge badge-pill badge-info">Credito</span></td>
+      {% endif %}
+      {% if i.pago == 3 %}
+      <td><span class="badge badge-pill badge-danger">Tarjeta</span></td>
+      {% endif %}
+      <td>{{ i.owner}}</td>
+      <td>{{ i.total|floatformat:2|intcomma }}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table> 
+
+
+{% endif %}
+<!-- Cliente  -->
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+{% block script %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/af-2.3.4/fc-3.3.0/fh-3.1.6/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/af-2.3.4/fc-3.3.0/fh-3.1.6/r-2.2.3/sp-1.0.1/sl-1.3.1/datatables.min.js"></script>
+
+<script>
+
+  $(function () {
+ $('#example1').DataTable({
+        order: [[ 1, "desc" ]],
+        responsive: true,
+        autoWidth: false,
+        destroy: true,
+        deferRender: true,
+        searching: true,
+        paging: true,
+        
+    });
+  });
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<script>
+new Chart(document.getElementById("bar-chartc"), {
+    type: 'line',
+    data: {
+ 
+      labels: [{% for i in COMPRAS %}  new Intl.NumberFormat("en-IN").format({{ i.total|floatformat:0}}), {% endfor %}],
+       
+      datasets: [
+        {
+          //label: "Population (millions)",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+        
+          data: [{% for i in COMPRAS %}  {{ i.total|floatformat:0 }}, {% endfor %}]
+         
+
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Grafica de Compras:'
+      }
+    }
+});
+</script>
+
+
+<script>
+new Chart(document.getElementById("bar-chartv"), {
+    type: 'line',
+    data: {
+ 
+      labels: [{% for i in VENTAS %}  new Intl.NumberFormat("en-IN").format({{ i.total|floatformat:0}}), {% endfor %}],
+       
+      datasets: [
+        {
+          //label: "Population (millions)",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+        
+          data: [{% for i in VENTAS %}  {{ i.total|floatformat:0 }}, {% endfor %}]
+         
+
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Grafica de Ventas:'
+      }
+    }
+});
+</script>
+
+
+{% endblock %}
