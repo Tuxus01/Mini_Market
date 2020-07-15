@@ -1,139 +1,323 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
-    <!-- Title  -->
-    <title>App</title>
-
-    <!-- Favicon  -->
-    <link rel="icon" href="#">
-
-    <!-- Core Style CSS -->
-    <link rel="stylesheet" href="{% static 'amado/css/core-style.css' %}">
-    <link rel="stylesheet" href="{% static 'amado/style.css' %}">
-
-</head>
-
-<body>
-
-    <!-- Search Wrapper Area Start -->
-    <div class="search-wrapper section-padding-100">
-        <div class="search-close">
-            <i class="fa fa-close" aria-hidden="true"></i>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="search-content">
-                        <form action="#" method="get">
-                            <input type="search" id="buscar" name="buscar" autocomplete="off" placeholder="Buscar... ">
-                            <button type="submit"><img src="{% static 'amado/img/core-img/search.png' %}" alt=""></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Search Wrapper Area End -->
-
-    <!-- ##### Main Content Wrapper Start ##### -->
-    <div class="main-content-wrapper d-flex clearfix">
-
-        <!-- Mobile Nav (max width 767px)-->
-        <div class="mobile-nav">
-            <!-- Navbar Brand -->
-            <div class="amado-navbar-brand">
-                <a href="{% url 'base:store' %}"><img src="{% static 'amado/img/core-img/shop.png' %}" alt=""></a>
-            </div>
-            <!-- Navbar Toggler -->
-            <div class="amado-navbar-toggler">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-
-        <!-- Header Area Start -->
-        <header class="header-area clearfix">
-            <!-- Close Icon -->
-            <div class="nav-close">
-                <i class="fa fa-close" aria-hidden="true"></i>
-            </div>
-            <!-- Logo -->
-            <div class="logo">
-                <a href="{% url 'base:store' %}"><img src="{% static 'amado/img/core-img/shop.png' %}" alt=""></a>
-            </div>
-            <!-- Amado Nav -->
-            <nav class="amado-nav">
-                <ul>
-                    <li class="active"><a href="{% url 'base:store' %}">Inicio</a></li>
-                    <li><a href="{% url 'base:shop' %}">Comprar</a></li>
-            
-                </ul>
-            </nav>
-            <!-- Button Group 
-            <div class="amado-btn-group mt-30 mb-100">
-                <a href="#" class="btn amado-btn mb-15">%Discount%</a>
-                <a href="#" class="btn amado-btn active">New this week</a>
-            </div>-->
-            <!-- Cart Menu -->
-            
-            <div class="cart-fav-search mb-100">
-                <a href="{% url 'base:carrito_list' %}" class="cart-nav"><img src="{% static 'amado/img/core-img/cart.png' %}" alt=""> Carrito <span>({{ CAR_INT }})</span></a>
-                <!--<a href="#" class="fav-nav"><img src="{% static 'amado/img/core-img/favorites.png' %}" alt=""> Favourite</a>-->
-                <a href="#" class="search-nav"><img src="{% static 'amado/img/core-img/search.png' %}" alt=""> Buscar</a>
-            </div>
-            <!-- Social Button -->
-            <div class="social-info d-flex justify-content-between">
-                <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-            </div>
-        </header>
-        <!-- Header Area End -->
-
-        {% block contentShop %}
-
-        {% endblock %}
-        <!-- Product Catagories Area Start -->
-        <div class="products-catagories-area clearfix">
-            <div class="amado-pro-catagory clearfix">
-
-                {% block content %}
-
-                {% endblock %}
-                
-
-               
-            </div>
-        </div>
-        <!-- Product Catagories Area End -->
-    </div>
-    <!-- ##### Main Content Wrapper End ##### -->
-       {% block script %}
-
-    {% endblock %}
-
-    <!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
-    <script src="{% static 'amado/js/jquery/jquery-2.2.4.min.js' %}"></script>
-    <!-- Popper js -->
-    <script src="{% static 'amado/js/popper.min.js' %}"></script>
-    <!-- Bootstrap js -->
-    <script src="{% static 'amado/js/bootstrap.min.js' %}"></script>
-    <!-- Plugins js -->
-    <script src="{% static 'amado/js/plugins.js' %}"></script>
-    <!-- Active js -->
-    <script src="{% static 'amado/js/active.js' %}"></script>
-
-
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
  
+</head>
+<body>
+  <div id="app">
 
+
+
+        <template>
+            <v-app id="inspire">
+              <v-navigation-drawer
+                v-model="drawer"
+                :clipped="$vuetify.breakpoint.lgAndUp"
+                app
+                color="blue-grey lighten-5"
+              >
+                <v-list >
+
+                
+                    <v-list nav class="py-2">
+                    <v-list-item two-line >
+                        <v-img  src="{% static 'amado/img/core-img/shop.png' %}"></v-img>
+                    </v-list-item>
+          
+                <v-divider></v-divider>
+
+
+                  <template v-for="item in items">
+                    <v-row
+                      v-if="item.heading"
+                      :key="item.heading"
+                      align="center"
+                    >
+                      <v-col cols="6">
+                        <v-subheader v-if="item.heading">
+                          [[ item.heading ]]
+                        </v-subheader>
+                      </v-col>
+                      <v-col
+                        cols="6"
+                        class="text-center"
+                      >
+                        <a
+                          href="#!"
+                          class="body-2 black--text"
+                        >EDIT</a>
+                      </v-col>
+                    </v-row>
+                    <v-list-group
+                      v-else-if="item.children"
+                      :key="item.text"
+                      v-model="item.model"
+                      :prepend-icon="item.model ? item.icon : item['icon-alt']"
+                      append-icon=""
+                    >
+                      <template v-slot:activator>
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            [[ item.text ]]
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </template>
+                      <v-list-item
+                        v-for="(child, i) in item.children"
+                        :key="i"
+                        link
+                      >
+                        <v-list-item-action v-if="child.icon">
+                          <v-icon>[[ child.icon ]]</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            [[ child.text ]]
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-group>
+                    <v-list-item
+                      v-else
+                      :key="item.text"
+                      link
+                      :href="item.url"
+                    >
+                      <v-list-item-action>
+                        <v-icon>[[ item.icon ]]</v-icon>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          [[ item.text ]]
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </template>
+                </v-list>
+              </v-navigation-drawer>
+          
+              <v-app-bar
+                :clipped-left="$vuetify.breakpoint.lgAndUp"
+                app
+                color="blue darken-3"
+                dark
+              >
+                <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+                <v-toolbar-title
+                  style="width: 300px"
+                  class="ml-0 pl-4"
+                >
+                  <span class="hidden-sm-and-down">Mini Market</span>
+                </v-toolbar-title>
+                <v-text-field
+                  flat
+                  solo-inverted
+                  hide-details
+                  prepend-inner-icon="mdi-magnify"
+                  label="Search"
+                  class="hidden-sm-and-down"
+              
+                  
+                ></v-text-field>
+                <v-spacer></v-spacer>
+                <v-btn icon>
+                  <v-icon>mdi-cart</v-icon>
+                </v-btn>
+                
+                
+              </v-app-bar>
+                <v-content>
+                    {% block content %}
+
+                    {% endblock %}
+                </v-content>
+              <v-btn
+                bottom
+                color="pink"
+                dark
+                fab
+                fixed
+                right
+                @click="dialog = !dialog"
+              >
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+              <v-dialog
+                v-model="dialog"
+                width="800px"
+              >
+                <v-card>
+                  <v-card-title class="grey darken-2">
+                    Create contact
+                  </v-card-title>
+                  <v-container>
+                    <v-row class="mx-2">
+                      <v-col
+                        class="align-center justify-space-between"
+                        cols="12"
+                      >
+                        <v-row
+                          align="center"
+                          class="mr-0"
+                        >
+                          <v-avatar
+                            size="40px"
+                            class="mx-3"
+                          >
+                            <img
+                              src="//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png"
+                              alt=""
+                            >
+                          </v-avatar>
+                          <v-text-field
+                            placeholder="Name"
+                          ></v-text-field>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-text-field
+                          prepend-icon="mdi-account-card-details-outline"
+                          placeholder="Company"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-text-field
+                          placeholder="Job title"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-text-field
+                          prepend-icon="mdi-mail"
+                          placeholder="Email"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-text-field
+                          type="tel"
+                          prepend-icon="mdi-phone"
+                          placeholder="(000) 000 - 0000"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-text-field
+                          prepend-icon="mdi-text"
+                          placeholder="Notes"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                  <v-card-actions>
+                    <v-btn
+                      text
+                      color="primary"
+                    >More</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="dialog = false"
+                    >Cancel</v-btn>
+                    <v-btn
+                      text
+                      @click="dialog = false"
+                    >Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-app>
+          </template>
+          
+    
+  </div>
+
+
+
+
+
+
+  
+  <!--Informacion del contenido a mostrar -->
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+
+
+  <script>
+
+var app = new Vue({
+  delimiters: ['[[', ']]'],
+  el: '#app',
+  vuetify: new Vuetify(),
+  data: {
+      message: 'Hello Vue!',
+      show: false,
+      cards: [
+        { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 12 },
+        { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
+        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
+      ],
+      
+      items: [
+        {
+          text: 'Dashboard',
+          disabled: true,
+          url: '/',
+        },
+        {
+          text: 'Comap',
+          disabled: false,
+          url: '/base/company',
+        },
+        {
+          text: 'Comap',
+          disabled: false,
+          url: '/base/company',
+        },
+       
+      ],
+
+      dialog: false,
+      drawer: true,
+      items: [
+        { icon: 'mdi-store', text: 'Inicio' , url : '/store' },
+        { icon: 'mdi-content-copy', text: 'Mas Productos' , url : '#'},
+        { icon: 'mdi-cart', text: 'Carrito ({{ CAR_INT }})', url : '/store/carrito' },
+        {
+          icon: 'mdi-chevron-up',
+          'icon-alt': 'mdi-chevron-down',
+          text: 'Categorias',
+          model: false,
+          children: [
+            { icon: 'mdi-', text: 'Mujer' , url : '#'},
+            { icon: 'mdi-', text: 'Hombre', url : '#' },
+            { icon: 'mdi-', text: 'Niños' , url : '#'},
+            { icon: 'mdi--', text: 'Niña' , url : '#'},
+            { icon: 'mdi--', text: 'Otros Productos' , url : '#'},
+            
+       
+          ],
+        },
+       
+      ],
+        
+     
+  },
+  methods: {
+     
+  }
+});
+
+
+  </script>
 </body>
-
 </html>

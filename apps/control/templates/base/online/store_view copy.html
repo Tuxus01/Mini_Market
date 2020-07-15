@@ -5,49 +5,6 @@
 
 
 {% block content %}
-<v-container grid-list-lg>
-    <v-layout row wrap>
-        <v-flex xs12 lg5 md4>
-            <div>
-                <v-carousel dark :show-arrows="true">
-                    {% if DETALLE.imagen %}
-                    <v-carousel-item
-                    link
-                    href="/{{ DETALLE.imagen }}"
-                      src="/{{ DETALLE.imagen }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                    {% if DETALLE.imagen2 %}
-                    <v-carousel-item
-                      src="/{{ DETALLE.imagen2 }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                    {% if DETALLE.imagen3 %}
-                    <v-carousel-item
-                      src="/{{ DETALLE.imagen3 }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                    {% if DETALLE.imagen4 %}
-                    <v-carousel-item
-                      src="/{{ DETALLE.imagen4 }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                    {% if DETALLE.imagen5 %}
-                    <v-carousel-item
-                      src="/{{ DETALLE.imagen5 }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                    {% if DETALLE.imagen6 %}
-                    <v-carousel-item
-                      src="/{{ DETALLE.imagen6 }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                  </v-carousel>
-            </div>
-        </v-flex>
-    </v-layout>
-</v-container>
-
 
 
  <!-- Product Details Area Start -->
