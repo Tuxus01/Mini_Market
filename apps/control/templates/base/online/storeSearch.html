@@ -12,47 +12,52 @@
 
 {% block content %}
 
-
-<section class="p-5"> 
-<div class="row p-lg-2 justify-content-md-center">
-    <div class="col-lg-8 col-sm-12 ">
-        <div class="row">
-
-            {% for i in ITEMS %}
-            
-            <div class="col-lg-12 col-sm-12  card border border-success">
-                <div class="row">
-                    <div class="col-lg-2 col-sm-12">
-                        <img class="card-img-top" src="/{{ i.imagen }}" width="100" height="200">
-                    </div>
-                    <div class="col-lg-10 col-sm-12">
-                         <div class="card-body">
-                            <h5 class="card-title">{{ i.nombre }} </h5>
-                        
-                            <h6 class="card-subtitle mb-2 text-muted "  >Cantidad Disponibles :  <span class="badge badge-pill badge-success">{{ i.stock_actual }}</span>  , Precio Venta : L. <span class="badge badge-pill badge-info">{{ i.pre_venta }}</span></h6>
-                            {% if i.talla %}
-                            <h6 class="card-subtitle mb-2 text-muted ">Talla : <span class="badge badge-pill badge-success">{{ i.talla }}</span> </h6>
-                            {% endif %}
-                            {% if i.subcategoria %}
-                                <h6 class="card-subtitle mb-2 text-muted ">Categoria : <span class="badge badge-pill badge-success">{{ i.subcategoria }}</span> </h6>
-                            {% endif %}
-                            {% if i.color %}
-                                <h6 class="card-subtitle mb-2 text-muted ">Color :  <span class="badge badge-pill badge-secundary"> {{ i.color }}</span></h6>
-                            {% endif %}
-                            <p class="card-text">{{ i.descripcion }}</p>
-                            <a href="#" class="card-link ">Agregar al Carrito</a>
-                            <a href="{% url 'base:store_id' i.id %}" class="card-link ">Ver mas Detalles</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            {% endfor %}
-
-        </div>
+<h1 align="center"> Lista de Productos Encontrados</h1>
+{% for i in ITEMS %}
+<v-card class="mx-auto" max-width="944">
+<v-list-item three-line>
+  <v-list-item-content>
+    <div class="overline mb-4">
+        Cantidad Disponibles : {{ i.stock_actual }} Precio Venta: {{ i.pre_venta }}
     </div>
-</div>
-</section>
+    <v-list-item-title class="headline mb-1">{{ i.nombre }}</v-list-item-title>
+    <v-list-item-subtitle>
+        <h4>Precio Venta: {{ i.pre_venta }}</h4><br>
+
+    </v-list-item-subtitle>
+    <v-list-item-subtitle>
+    
+        {{ i.descripcion }}
+    </v-list-item-subtitle>
+
+    <div class="">
+        {% if i.subcategoria %}
+            <br><v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon> {{ i.subcategoria }}
+        {% endif %}
+        {% if i.talla %}
+            <br><v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon> Talla : {{ i.talla }}<br>
+        {% endif %}
+        {% if i.color %}
+            <br><v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon> Color : {{ i.color }}<br>
+        {% endif %}
+        </div>
+
+  </v-list-item-content>
+
+  <v-list-item-avatar tile size="140" color="grey" >
+  <v-img height="150" width="150" src="/{{ i.imagen }}"></v-img>
+</v-list-item-avatar>
+</v-list-item>
+
+<v-card-actions>
+  <v-btn color="green" block text  href="{% url 'base:store_id' i.id %}" >Ver Mas Detalle</v-btn>
+ 
+</v-card-actions>
+</v-card>
+<br>
+{% endfor %}
+
+
 {% endblock %}
 
 

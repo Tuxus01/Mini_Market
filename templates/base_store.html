@@ -2,6 +2,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<!-- Fotorama from CDNJS, 19 KB -->
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+
+
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
@@ -103,11 +111,11 @@
                   </template>
                 </v-list>
               </v-navigation-drawer>
-          
+              <form action="#" method="get">
               <v-app-bar
                 :clipped-left="$vuetify.breakpoint.lgAndUp"
                 app
-                color="blue darken-3"
+                color="pink darken-2"
                 dark
               >
                 <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -117,6 +125,7 @@
                 >
                   <span class="hidden-sm-and-down">Mini Market</span>
                 </v-toolbar-title>
+                
                 <v-text-field
                   flat
                   solo-inverted
@@ -124,21 +133,38 @@
                   prepend-inner-icon="mdi-magnify"
                   label="Search"
                   class="hidden-sm-and-down"
-              
-                  
+                  type="search"
+                  id="buscar" name="buscar"
+
                 ></v-text-field>
+                
                 <v-spacer></v-spacer>
-                <v-btn icon>
+
+             
+
+
+                <v-btn href="/store/carrito" icon>
+                  <v-badge
+                  content="{{ CAR_INT }}"
+                  value="messages"
+                  color="green"
+                  overlap
+                  left
+                  
+                >
                   <v-icon>mdi-cart</v-icon>
+                </v-badge>
                 </v-btn>
                 
                 
               </v-app-bar>
-                <v-content>
+            </form>
+                <v-content >
                     {% block content %}
 
                     {% endblock %}
                 </v-content>
+            
               <v-btn
                 bottom
                 color="pink"
@@ -309,6 +335,23 @@ var app = new Vue({
         },
        
       ],
+
+      //Tabla de checo store/carrito
+      headers: [
+          {
+            text: 'Dessert (100g serving)',
+            align: 'left',
+            sortable: false,
+            value: 'name'
+          },
+          { text: 'Calories', value: 'calories' },
+          { text: 'Fat (g)', value: 'fat' },
+          { text: 'Carbs (g)', value: 'carbs' },
+          { text: 'Protein (g)', value: 'protein' },
+          { text: 'Iron (%)', value: 'iron' }
+        ],
+
+      
         
      
   },

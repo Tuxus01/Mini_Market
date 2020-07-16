@@ -9,20 +9,13 @@
 
 <v-container grid-list-lg>
 <v-layout row wrap>
+
+  
 {% for i in Lista %}
 <v-flex xs12 lg2 md4>
-  <v-card
-  :loading="loading"
-  class="mx-auto my-12"
-  max-width="374"
->
-  <v-img
-    height="250"
-    src="/{{ i.imagen }}"
-  ></v-img>
-
+  <v-card :loading="loading" class="mx-auto my-12"  max-width="374">
+  <v-img height="250" src="/{{ i.imagen }}" ></v-img>
   <v-card-title>{{ i.nombre }}</v-card-title>
-
   <v-card-text>
     <v-row
       align="center"
@@ -81,7 +74,7 @@
     <v-btn
     
       rounded 
-      color="green lighten-1 "
+      color="green "
       
       @click="reserve"
       dark

@@ -4,221 +4,100 @@
 {% load l10n %}
 
 
+
 {% block content %}
+
+
 <v-container grid-list-lg>
     <v-layout row wrap>
-        <v-flex xs12 lg5 md4>
-            <div>
-                <v-carousel dark :show-arrows="true">
-                    {% if DETALLE.imagen %}
-                    <v-carousel-item
-                    link
-                    href="/{{ DETALLE.imagen }}"
-                      src="/{{ DETALLE.imagen }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                    {% if DETALLE.imagen2 %}
-                    <v-carousel-item
-                      src="/{{ DETALLE.imagen2 }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                    {% if DETALLE.imagen3 %}
-                    <v-carousel-item
-                      src="/{{ DETALLE.imagen3 }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                    {% if DETALLE.imagen4 %}
-                    <v-carousel-item
-                      src="/{{ DETALLE.imagen4 }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                    {% if DETALLE.imagen5 %}
-                    <v-carousel-item
-                      src="/{{ DETALLE.imagen5 }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                    {% if DETALLE.imagen6 %}
-                    <v-carousel-item
-                      src="/{{ DETALLE.imagen6 }}"
-                    ></v-carousel-item>
-                    {% endif %}
-                  </v-carousel>
+        
+        <v-flex xs12 lg5 md5>
+        <v-card class="mx-auto"  >
+            <div class="fotorama" data-allowfullscreen="true"  data-width="800" data-height="600"  data-nav="thumbs" data-loop="true" data-arrows="true" data-click="true" data-swipe="false">
+            {% if DETALLE.imagen %}
+                <img src="/{{ DETALLE.imagen }}">
+            {% endif %}
+            {% if DETALLE.imagen2 %}
+                <img src="/{{ DETALLE.imagen2 }}">
+            {% endif %}
+            {% if DETALLE.imagen3 %}
+                <img src="/{{ DETALLE.imagen3 }}">
+            {% endif %}
+            {% if DETALLE.imagen4 %}
+                <img src="/{{ DETALLE.imagen4 }}">
+            {% endif %}
+            {% if DETALLE.imagen5 %}
+                <img src="/{{ DETALLE.imagen5 }}">
+            {% endif %}
+            {% if DETALLE.imagen6 %}
+                <img src="/{{ DETALLE.imagen6 }}">
+            {% endif %}
             </div>
+        </v-card>
         </v-flex>
-    </v-layout>
-</v-container>
 
+        <v-flex xs12 lg7 md7>
+            <v-card class="mx-auto" >
+                <v-card-text>
+                    <div>Marcas y Productos seleccionados</div>
+                    <p class="display-1 text--primary">
+                        {{ DETALLE.nombre }}
+                    </p>
 
+                    <p class="display-1 text--primary">
+                       $ {{ DETALLE.pre_venta|floatformat:0|intcomma  }}.00
+                    </p>
 
- <!-- Product Details Area Start -->
-        <div class="single-product-area section-padding-100 clearfix">
-            <div class="container-fluid">
-
-               <!-- <div class="row">
-                    <div class="col-12">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb mt-50">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Furniture</a></li>
-                                <li class="breadcrumb-item"><a href="#">Chairs</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">white modern chair</li>
-                            </ol>
-                        </nav>
+                   
+                    <div class="">
+                        <v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon> Existencia : {{ DETALLE.stock_actual|floatformat:0|intcomma  }}
+                        {% if DETALLE.subcategoria %}
+                        <br><v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon> Sub Categoria : {{ DETALLE.subcategoria }}
+                        {% endif %}
+                        {% if DETALLE.talla %}
+                        <br><v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon> Talla : {{ DETALLE.talla }}
+                        {% endif %}
+                        {% if DETALLE.color %}
+                        <br><v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon> Color : {{ DETALLE.color }}
+                        {% endif %}
+                    <br>
                     </div>
-                </div>-->
-
-                <div class="row">
-                    <div class="col-12 col-lg-7">
-                        <div class="single_product_thumb">
-                            <div id="product_details_slider" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                    {% if DETALLE.imagen %}
-                                    <li class="active" data-target="#product_details_slider" data-slide-to="0" style="background-image: url(/{{ DETALLE.imagen }});">
-                                    </li>
-                                    {% endif %}
-
-                                    {% if DETALLE.imagen2 %}
-                                    <li data-target="#product_details_slider" data-slide-to="1" style="background-image: url(/{{ DETALLE.imagen2 }});">
-                                    </li>
-                                    {% endif %}
-
-                                    {% if DETALLE.imagen3 %}
-                                    <li data-target="#product_details_slider" data-slide-to="2" style="background-image: url(/{{ DETALLE.imagen3 }});">
-                                    </li>
-                                    {% endif %}
-
-                                    {% if DETALLE.imagen4 %}
-                                    <li data-target="#product_details_slider" data-slide-to="3" style="background-image: url(/{{ DETALLE.imagen4 }});">
-                                    </li>
-                                    {% endif %}
-
-                                    {% if DETALLE.imagen5 %}
-                                    <li data-target="#product_details_slider" data-slide-to="4" style="background-image: url(/{{ DETALLE.imagen5 }});">
-                                    </li>
-                                    {% endif %}
-
-                                    {% if DETALLE.imagen6 %}
-                                    <li data-target="#product_details_slider" data-slide-to="5" style="background-image: url(/{{ DETALLE.imagen6 }});">
-                                    </li>
-                                    {% endif %}
-                                    
-                                </ol>
-                                <div class="carousel-inner">
-                                    {% if DETALLE.imagen %}
-                                    <div class="carousel-item active">
-                                        <a class="gallery_img" href="/{{ DETALLE.imagen }}">
-                                            <img class="d-block w-100" src="/{{ DETALLE.imagen }}" alt="First slide">
-                                        </a>
-                                    </div>
-                                    {% endif %}
-
-                                    {% if DETALLE.imagen2 %}
-                                    <div class="carousel-item">
-                                        <a class="gallery_img" href="/{{ DETALLE.imagen2 }}">
-                                            <img class="d-block w-100" src="/{{ DETALLE.imagen2 }}" alt="Second slide">
-                                        </a>
-                                    </div>
-                                    {% endif %} 
-
-                                    {% if DETALLE.imagen3 %}
-                                    <div class="carousel-item">
-                                        <a class="gallery_img" href="/{{ DETALLE.imagen3 }}">
-                                            <img class="d-block w-100" src="/{{ DETALLE.imagen3 }}" alt="Second slide">
-                                        </a>
-                                    </div>
-                                    {% endif %} 
-
-                                    {% if DETALLE.imagen4 %}
-                                    <div class="carousel-item">
-                                        <a class="gallery_img" href="/{{ DETALLE.imagen4 }}">
-                                            <img class="d-block w-100" src="/{{ DETALLE.imagen4 }}" alt="Second slide">
-                                        </a>
-                                    </div>
-                                    {% endif %} 
-
-                                    {% if DETALLE.imagen5 %}
-                                    <div class="carousel-item">
-                                        <a class="gallery_img" href="/{{ DETALLE.imagen5 }}">
-                                            <img class="d-block w-100" src="/{{ DETALLE.imagen5 }}" alt="Second slide">
-                                        </a>
-                                    </div>
-                                    {% endif %} 
-
-                                    {% if DETALLE.imagen6 %}
-                                    <div class="carousel-item">
-                                        <a class="gallery_img" href="/{{ DETALLE.imagen6 }}">
-                                            <img class="d-block w-100" src="/{{ DETALLE.imagen6 }}" alt="Second slide">
-                                        </a>
-                                    </div>
-                                    {% endif %} 
-                                    
-                                    
-                                </div>
-                            </div>
-                        </div>
+                    <br><div class="text--primary">
+                       {{ DETALLE.descripcion }}
                     </div>
-                    <div class="col-12 col-lg-5">
-                        <div class="single_product_desc">
-                            <!-- Product Meta Data -->
-                            <div class="product-meta-data">
-                                <div class="line"></div>
-                                <p class="product-price"> L.{{ DETALLE.pre_venta|floatformat:2|intcomma  }}</p>
-                                <a href="#">
-                                    <h6>{{ DETALLE.nombre }}</h6>
-                                </a>
-                                <!-- Ratings & Review -->
-                                <div class="ratings-review mb-15 d-flex align-items-center justify-content-between">
-                                    <div class="ratings">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="review">
-                                        <a href="#">Escribe una reseña</a>
-                                    </div>
-                                </div>
-                                <!-- Avaiable -->
-                                <h6> <p class="avaibility"><i class="fa fa-circle"></i> Existencia : {{ DETALLE.stock_actual|floatformat:0|intcomma  }}</p></h6>
-                                {% if DETALLE.subcategoria %}
-                                <h6> <p class="avaibility"><i class="fa fa-circle"></i> Sub Categoria : <span class="badge badge-success">{{ DETALLE.subcategoria }}</span> </p></h6>
-                                {% endif %}
-                                {% if DETALLE.talla %}
-                                <h6> <p class="avaibility"><i class="fa fa-circle"></i> Talla : <span class="badge badge-success">{{ DETALLE.talla }}</span> </p></h6>
-                                {% endif %}
-                                {% if DETALLE.color %}
-                                <h6> <p class="avaibility"><i class="fa fa-circle"></i> Color : <span class="badge badge-success">{{ DETALLE.color }}</span> </p></h6>
-                                {% endif %}
-                            </div>
+                </v-card-text>
+                <v-card-actions>
+                    <form class="cart clearfix" method="post" action='.'>
+                        {% csrf_token %}
+                        <v-flex xs12>
+                            <v-subheader  id="qty" name="quantity" class="pl-0">Cantidad de Producto</v-subheader>
+                            <br>
+                            <v-slider
+                              id="qty" name="quantity" 
+                              
+                              thumb-color="green"
+                              thumb-label="always"
+                              min=1
+                              max= {{ DETALLE.stock_actual|floatformat:0|intcomma  }}
+                            ></v-slider>
+                          </v-flex>
+                    
+                        
+                        <br> <v-btn type="submit" color="green"  >
+                            <v-icon>mdi-cart</v-icon> Agregar 
+                        </v-btn>
+                </form>
+                </v-card-actions>
+            </v-card>
+        </v-flex>
 
-                            <div class="short_overview my-5">
-                                <p>{{ DETALLE.descripcion }}</p>
-                            </div>
 
-                            <!-- Add to Cart Form -->
-                            <form class="cart clearfix" method="post" action='.'>
-                            {% csrf_token %}
-                                <div class="cart-btn d-flex mb-50">
-                                    <p>Qty</p>
-                                    <div class="quantity">
-                                        <span class="qty-minus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
-                                        <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="1">
-                                        <span class="qty-plus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
-                                    </div>
-                                </div>
-                                <!--<button type="submit" name="addtocart" value="5" class="btn amado-btn">Add to cart</button>-->
-                                <button type="submit" class="btn amado-btn">Agregar al Carrito</button>
-                                
-                            </form>
+        <v-flex xs12 lg12 md12>
+            <v-card class="mx-auto" >
+                Detalles y productos relacionados
+            </v-card>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Product Details Area End -->
-
+        </v-flex>
 
 {% endblock %}
 
