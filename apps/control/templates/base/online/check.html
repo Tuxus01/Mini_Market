@@ -6,6 +6,168 @@
 
 {% block content %}
 
+
+
+
+{% if STATUS == 0 %}
+<v-container grid-list-lg>
+    <v-layout row wrap>
+
+        <v-flex xs12 lg8 md8>
+            <h2 align="center">Información de Envio</h2></br>
+            <v-card class="mx-auto" >
+                <v-container>
+                    <v-row>
+                      <v-col cols="12" xs12 lg12 md12>
+                        <v-text-field
+                         
+                          :rules="nameRules"
+                          :counter="80"
+                          label="Nombre Completo"
+                          required
+                          color="pink"
+                          value="{{ DIRECCION.nombre }}"
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="6"  xs12 lg6 md6>
+                        <v-text-field
+                       
+                        :rules="emailRules"
+                        label="E-mail"
+                        required
+                        color="pink"
+                        value="{{ DIRECCION.email }}"
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="6" xs12 lg12 md12>
+                        <v-text-field
+                         
+                          :rules="nameRules"
+                          :counter="80"
+                          label="Barrio/Colonia/Residencial"
+                          required
+                          color="pink"
+                          value="{{ DIRECCION.direccion }}"
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="6" xs12 lg6 md6>
+                        <v-text-field
+                          
+                          :counter="15"
+                          label="Telefono"
+                          required
+                          color="pink"
+                          value="{{ DIRECCION.telefono }}"
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="6" xs12 lg6 md6>
+                        <v-text-field
+                          
+                          :counter="15"
+                          label="Telefono"
+                          required
+                          color="pink"
+                          value="{{ DIRECCION.telefono2 }}"
+                        ></v-text-field>
+                      </v-col>
+
+                      
+                      <v-col cols="12" xs12 lg12 md12>
+                        <v-textarea
+                        value="{{ DIRECCION.direccion2 }}"
+                        label="Dirección más detallada"
+                        color="pink"
+                        
+                      ></v-textarea>
+                      </v-col>
+
+
+                    
+              
+                    </v-row>
+                  </v-container>
+
+
+
+
+
+
+            </v-card>
+        </v-flex>
+
+        <v-flex xs12 lg4 md4>
+            <h1 class="headline" align="center">Total a Pagar</h1></br>
+            <v-card class="mx-auto" >
+                
+
+                <v-card>
+                <v-simple-table>
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">Sub Total</th>
+                          <th class="text-left">{{ SUBTOTAL|floatformat:2|intcomma }}</th>
+                        </tr>
+                        <tr>
+                            <th class="text-left">ISV 15%</th>
+                            <th class="text-left">{{ ISV_15|floatformat:2|intcomma }}</th>
+                          </tr>
+                          <tr>
+                            <th class="text-left">ISV 18%</th>
+                            <th class="text-left">{{ ISV_18|floatformat:2|intcomma }}</th>
+                          </tr>
+
+                          <tr>
+                            <th class="text-left">Descuento </th>
+                            <th class="text-left">00.00</th>
+                          </tr>
+                      </thead>
+                      
+                    </template>
+                  </v-simple-table>
+                </v-card>
+
+
+            <v-card>
+                <v-card-text>
+                    <v-row align="center">
+                      <v-col class="display-1" cols="12">
+                      Pagar : $ {{ TOTAL|floatformat:2|intcomma }}
+                      </v-col>
+                     
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+            
+               
+            
+                <v-divider></v-divider>
+            
+                <v-card-actions >
+                    <v-col cols="12" xs12 lg12 md12>
+                    <v-form method="post" action='/store/carrito/check'>
+                        {% csrf_token %}
+                        <v-btn type="submit" block color="green">Validar Información</v-btn>
+                    </v-form>
+                    </v-col>    
+                </v-card-actions>
+              
+            </v-card>
+
+            </v-card>
+        </v-flex>
+
+    </v-layout>
+</v-container>
+{% endif %}
+
+
+
+
 {% if STATUS == 1 %}
 <div class="cart-table-area section-padding-100">
             <div class="container-fluid">
@@ -62,7 +224,7 @@
 {% endif %}
 
 
-{% if STATUS == 0 %}
+{% if STATUS == 3 %}
 <div class="cart-table-area section-padding-100">
             <div class="container-fluid">
                 <div class="row">
