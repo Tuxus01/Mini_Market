@@ -13,6 +13,7 @@ urlpatterns = [
     #Loign
     path('login/', LoginFormView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('signup/',signup, name='signup'),
     path('base/<str:Model>/list/', List , name="list"),
     path('base/<str:Model>/create/', Create , name="create"),
     path('base/<str:Model>/<int:id>/delete/', Delete , name="delete"),

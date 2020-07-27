@@ -47,6 +47,7 @@ from django.core.paginator import Paginator
 
 
 #Buscador Global
+@login_required(login_url='/login/')
 def buscar(texto):
     print(texto)
     componente = Componente.objects.filter(online=True).filter(Q(categoria__nombre__icontains=texto) | Q(nombre__icontains=texto) | Q(talla__nombre__icontains=texto) | Q(subcategoria__nombre__icontains=texto) | Q(color__nombre__icontains=texto)  )
@@ -59,6 +60,7 @@ def buscar(texto):
     return compo
 
 #Compras Online
+@login_required(login_url='/login/')
 def store_view(request):
 
     #Aplicando el buscador de componente globales
@@ -86,12 +88,15 @@ def store_view(request):
 
     subcategoria = SubCategoria.objects.all()
     #Enviar cantidad de objetos por orden a template
+    ################Aplicando la compra sin loge
     car_ord = Carrito.objects.filter(activo=True).filter(owner=request.user)[:1]
+    #car_ord = Carrito.objects.filter(activo=True)[:1]
     car_int = Detalle_Carrito.objects.filter(codigo=car_ord)
     ctx = {'Lista': articulos,'SUBCATEGORIA': subcategoria, 'CAR_INT':car_int.count()}
     return render(request, 'base/store.html' ,ctx )
 
 #Producto ID Y agregado de Carrito !! IMPORTANTE
+@login_required(login_url='/login/')
 def store_view_id(request, id):
     
     #Aplicando el buscador de componente globales
@@ -187,6 +192,7 @@ def store_view_id(request, id):
 
 #Json Request Finalizacion de pago por Paypal:
 #Este proceso finaliza la venta Online
+@login_required(login_url='/login/')
 def paymentComplete(request):
     body = json.loads(request.body)
     print('body : ', body)
@@ -259,6 +265,7 @@ def paymentComplete(request):
     
     return JsonResponse("Pago Completado", safe=False)
 
+@login_required(login_url='/login/')
 def store_categoria(request,Model):
 
     if request.method == 'GET':
@@ -288,6 +295,7 @@ def store_categoria(request,Model):
     #return HttpResponseRedirect('/store/'+ str(Model) +'/list')
 
 #Compras SHOP all Categoria
+@login_required(login_url='/login/')
 def Shop(request):
 
     if request.method == 'GET':
@@ -421,6 +429,7 @@ def Shop(request):
     return render(request, 'base/online/shop.html' , ctx)
 
 #Listado de productos y pago
+@login_required(login_url='/login/')
 def carrito_list(request):
     instanacias = Carrito.objects.filter(activo=True).filter(owner=request.user)[:1]
     detalle = Detalle_Carrito.objects.filter(codigo=instanacias)
@@ -452,7 +461,7 @@ def carrito_list(request):
     ctx = {'ITEMS' : instanacias, 'DETALLES':detalle, 'ISV_18':isv_18 , 'ISV_15':isv_15 , 'SUBTOTAL': subtotal, 'TOTAL':total,  'CAR_INT':car_int.count()}
     return render(request, 'base/online/cart.html' , ctx)
 
-
+@login_required(login_url='/login/')
 def carrito_check(request):
     #Variable que habilita el pago por paypal
     status = 0
@@ -492,6 +501,7 @@ def carrito_check(request):
     return render(request, 'base/online/check.html' , ctx)
 
 #Funcion encargada de agregar a la lista de compras de x usuario
+@login_required(login_url='/login/')
 def AddCarrito(request):
     pass
 
@@ -515,8 +525,10 @@ class LogoutRedirectView(RedirectView):
         logout(request)
         return super().dispatch(request, *args, **kwargs)
 
+
 @login_required(login_url='/login/')
 @method_decorator(csrf_exempt)
+@permission_required('is_staff', login_url='/store')
 def Index(request):
     #today = date.today()
     #Cantidad y Gasto Global de clientes
@@ -829,6 +841,30 @@ def Index(request):
 
     ctx = {'CLIENTES_TOTAL': cliente_t, 'CLIENTE_VENTA': total_dinero, 'PROVEEDOR_TOTAL':proveedor,'PROVEEDOR_COMPRA':total_dinero_compras,'CLIENTES_COBROS': len(datos), 'CLIENTES_COBROS_TOTAL':cuenta_cobrar_total, 'COMPRAS_CONTEO': conteo, 'COMPRAS_C_FINAL': total_compras_final,'VENTAS_SEMANALES':Ventas_Semanales,'COMPRAS_SEMANALES':Compras_Semanales }
     return render(request, 'base/index.html' , ctx)
+
+
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from .forms import SignUpForm
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return HttpResponseRedirect('/store')
+    else:
+        form = SignUpForm()
+    return render(request, 'base/signup.html', {'form': form})
+
+
+
 
 
 
