@@ -155,26 +155,26 @@
                       <v-expansion-panel  class="indigo darken-4 text-center">
                         <v-expansion-panel-header><h4 align="center" class="font-weight-black white--text" >Pagar al Entregar</h4></v-expansion-panel-header>
                         <v-expansion-panel-content class="white--text" >
-                          Al realizar la entrega del producto debera cancerlar un costo de Envio de L. 50.00
+                          Al realizar la entrega del producto debera cancerlar un costo de Envio de L. 50.00<br>
+                          favor rellenar el formulario para contactarlo.<br>
+
+                          <v-form method="post" action='/store/carrito/check'>
+                            {% csrf_token %}
+                            <v-btn type="submit" block color="white">Aceptar esta forma de pago</v-btn><br>
+                        </v-form>
+
+
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels><br>
 
                     
-                     <v-expansion-panels class="rounded-lg">
-                      <v-expansion-panel  class="teal darken-4 text-center">
-                        <v-expansion-panel-header><h4 align="center" class="font-weight-black white--text" >Pagadito</h4></v-expansion-panel-header>
-                        <v-expansion-panel-content class="white--text" >
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </v-expansion-panel-content>
-                      </v-expansion-panel>
-                    </v-expansion-panels><br>
 
                      <v-expansion-panels class="rounded-lg">
                       <v-expansion-panel  class="indigo darken-4 text-center">
                         <v-expansion-panel-header><h4 align="center" class="font-weight-black white--text" >Tigo Money</h4></v-expansion-panel-header>
                         <v-expansion-panel-content class="white--text" >
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                          Los depositos los puede hacer a los siguientes numero telefonicos : 98989898 - 98979797
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels><br>
@@ -185,17 +185,13 @@
                       <v-expansion-panel  class="green darken-3 text-center">
                         <v-expansion-panel-header><h4 align="center" class="font-weight-black white--text" >Transferencias Bancarias</h4></v-expansion-panel-header>
                         <v-expansion-panel-content class="white--text" >
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                          Por favor rellenar el formulario para ponernos en contacto con usted y asi poder realizar la transferencias.
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels><br>
 
 
-                    <v-form method="post" action='/store/carrito/check'>
-                        {% csrf_token %}
-                        <v-btn type="submit" block color="green">Pagar al Entregar</v-btn><br>
-                        <v-btn type="submit" block color="blue">Prestadito</v-btn><br>
-                    </v-form>
+                    
                     <div id="paypal-button-container"></div>
                     
                     </v-col>    

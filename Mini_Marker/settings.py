@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'apps.control',
     'widget_tweaks',
     'django_filters',
@@ -51,8 +52,15 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+]
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.RemoteUserBackend',
 ]
 
 REST_SESSION_LOGIN = True
@@ -88,10 +96,26 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',  # <-- Here
+                'social_django.context_processors.login_redirect', # <-- Here
             ],
         },
     },
 ]
+
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.github.GithubOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'fields': 'id, name, email, picture'
+}
 
 WSGI_APPLICATION = 'Mini_Marker.wsgi.application'
 
@@ -165,6 +189,12 @@ EMAIL_USE_TLS = True
 
 LOGIN_REDIRECT_URL = '/'
 
-LOGOUT_REDIRECT_URL = '/login/'
+#LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/store/'
 
 LOGIN_URL = '/login/'
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1695658090586823'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'a79607c1e83cd102d89cffd44caed35f'  # App Secret
+

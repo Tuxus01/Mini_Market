@@ -12,7 +12,12 @@
 
 {% block content %}
 
+
+{% if ITEMS %}
 <h1 align="center"> Lista de Productos Encontrados</h1>
+{% else %}
+<h1 align="center"> No se encontro ninguna referencia :( </h1>
+{% endif %}
 {% for i in ITEMS %}
 <v-card class="mx-auto" max-width="944">
 <v-list-item three-line>

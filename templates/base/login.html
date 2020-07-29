@@ -28,7 +28,7 @@
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
 			<div class="card-header">
-				<h3 align="center">Sign In</h3>
+				<h3 align="center">Iniciar Sesión</h3>
 				<div class="d-flex justify-content-end social_icon">
 					
 				</div>
@@ -52,9 +52,13 @@
 						
 					</div>
 				
-					<div class="form-group">
-						<input type="submit" value="Login" class="btn float-right login_btn">
+					<div class="m-1 form-group">
+						<button  type="submit"  class="btn btn-warning btn-lg btn-block float-right btn "><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+
+						<a class=" btn btn-primary btn-lg btn-block float-right btn " href="{% url 'social:begin' 'facebook' %}"><i class="fab fa-facebook-f"></i>acebook</a>
+						<a href="#" class="btn btn-warning btn-lg btn-block float-right btn disabled" role="button" aria-disabled="true"><i class="far fa-user" ></i> Registrarse</a>
 					</div>
+
 				</form>
 			</div>
 			<div class="card-footer">
