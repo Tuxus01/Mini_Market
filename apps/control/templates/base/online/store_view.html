@@ -74,12 +74,14 @@
                             <br>
                             <v-slider
                               id="qty" name="quantity" 
-                              
+                             
                               thumb-color="green"
                               thumb-label="always"
                               min=1
                               max= {{ DETALLE.stock_actual|floatformat:0|intcomma  }}
                             ></v-slider>
+
+
                           </v-flex>
                     
                         
@@ -104,15 +106,44 @@
         <v-flex xs12 lg12 md12>
             <v-card class="mx-auto" >
                 Detalles y productos relacionados
+                {{ MENSAJE }}
+              
+
+
             </v-card>
 
         </v-flex>
+
+
 
 {% endblock %}
 
 
 
+
 {% block script %}
 
+
+
+{% if ALERT == "on" %}
+<script>
+{% if MENSAJE == "agregado" %}
+    msj = "Se agrego exitosamente!!"
+    icono = 'success'
+{% else %}
+    msj="{{ MENSAJE }}"
+    icono = 'warning'
+{% endif %}
+
+    Swal.fire({
+        position: 'top-end',
+        icon: icono,
+        title : msj,
+        showConfirmButton: false,
+        timer: 2000
+    })
+    
+    </script>
+{% endif %}
 
 {% endblock %}

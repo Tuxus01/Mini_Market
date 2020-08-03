@@ -118,7 +118,10 @@ def store_view(request):
 #Producto ID Y agregado de Carrito !! IMPORTANTE
 #@login_required(login_url='/login/')
 def store_view_id(request, id):
-    
+    #Variable que alertara si el producto esta agregado al carrito de ventas por medio de un sweetalert Js
+    alerta = "off"
+    mensaje = ""
+
     #Aplicando el buscador de componente globales
     if request.method == 'GET':
         search = request.GET.get('buscar')
@@ -131,6 +134,7 @@ def store_view_id(request, id):
             ctx = {'ITEMS' : items , 'page_obj': page_obj,}
             return render(request, 'base/online/storeSearch.html' ,ctx )
             #return HttpResponseRedirect('/store/search/' , ctx)
+            
     detalle = Componente.objects.get(pk=id)
 
     #Metodo para agregar al carrito y validacion de orden de compra abierta
@@ -153,10 +157,22 @@ def store_view_id(request, id):
                 #extraer id para realizar su modificacion
                 isn = Detalle_Carrito.objects.filter(codigo=instanacias).filter(componente=detalle)[:1]
                 ids = Detalle_Carrito.objects.get(pk=isn)
+                
+                #Validar si el producto sobrepasa el total de requisito, ejemplo quiere agregar mas del existente en stock
+                comp = Componente.objects.get(pk=ids.componente.id)
+                print(comp.stock_actual)
                 cantidad = float(ids.cantidad)
                 ids.cantidad = cantidad + float(qty)
-                ids.save()
-                print("Se salvo los datos")
+
+                if comp.stock_actual < ids.cantidad:
+                    print("El stock actual es menor a la solicitud")
+                    mensaje = "No se puede agregar el producto por que sobrepasa el inventario."
+                else:
+                    
+                    ids.save()
+                    mensaje = "agregado"
+                    print("Se salvo los datos")
+                alerta = "on"
 
             else:
                 print("Detalles nuevos -- ")
@@ -179,6 +195,8 @@ def store_view_id(request, id):
                 detalle_c.isv = (float(detalle.pre_venta) * float(isv_c)) * float(request.POST.get('quantity'))
                 detalle_c.total = (float(detalle.pre_venta) * float(request.POST.get('quantity'))) + (float(detalle.pre_venta) * float(isv_c)) * float(request.POST.get('quantity'))
                 detalle_c.save()
+                alerta = "on"
+                mensaje = "agregado"
                 
 
         else:
@@ -212,6 +230,8 @@ def store_view_id(request, id):
                 detalle_c.isv = (float(detalle.pre_venta) * float(isv_c)) * float(request.POST.get('quantity'))
                 detalle_c.total = (float(detalle.pre_venta) * float(request.POST.get('quantity'))) + (float(detalle.pre_venta) * float(isv_c)) * float(request.POST.get('quantity'))
                 detalle_c.save()
+                alerta = "on"
+                mensaje = "agregado"
 
     if request.user.is_authenticated:   
         car_ord = Carrito.objects.filter(activo=True).filter(owner=request.user)[:1]
@@ -219,7 +239,7 @@ def store_view_id(request, id):
         car_ord = 0
 
     car_int = Detalle_Carrito.objects.filter(codigo=car_ord)
-    ctx = {'DETALLE' : detalle,'CAR_INT':car_int.count()}
+    ctx = {'DETALLE' : detalle,'CAR_INT':car_int.count(), 'ALERT':alerta,'MENSAJE':mensaje}
     return render(request, 'base/online/store_view.html' , ctx)
 
 #Json Request Finalizacion de pago por Paypal:
@@ -511,7 +531,14 @@ def carrito_check(request):
     #Variable que habilita el pago por paypal
     status = 0
     if request.method == 'POST':
-        status = 1
+        metodo1 = request.POST.get('pagoencasa')
+        metodo2 = request.POST.get('tigopaga')
+        metodo3 = request.POST.get('transferencia')
+        print(metodo1,metodo2,metodo3)
+
+    print("Voy por carrito check")
+    if request.method == 'POST':
+        status = 0
 
     if request.user.is_authenticated:
         instanacias = Carrito.objects.filter(activo=True).filter(owner=request.user)[:1]

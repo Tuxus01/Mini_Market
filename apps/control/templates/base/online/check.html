@@ -152,7 +152,7 @@
                     <v-col cols="12" xs12 lg12 md12>
 
                      <v-expansion-panels class="rounded-lg">
-                      <v-expansion-panel  class="indigo darken-4 text-center">
+                      <v-expansion-panel  class="blue lighten-1 text-center">
                         <v-expansion-panel-header><h4 align="center" class="font-weight-black white--text" >Pagar al Entregar</h4></v-expansion-panel-header>
                         <v-expansion-panel-content class="white--text" >
                           Al realizar la entrega del producto debera cancerlar un costo de Envio de L. 50.00<br>
@@ -160,7 +160,12 @@
 
                           <v-form method="post" action='/store/carrito/check'>
                             {% csrf_token %}
-                            <v-btn type="submit" block color="white">Aceptar esta forma de pago</v-btn><br>
+                            <v-text-field
+                            type="hidden"
+                            id="pagoencasa" name="pagoencasa"
+                            value="pagoencasa"
+                          ></v-text-field>
+                            <v-btn type="submit"  block color="white">Aceptar esta forma de pago</v-btn><br>
                         </v-form>
 
 
@@ -175,6 +180,15 @@
                         <v-expansion-panel-header><h4 align="center" class="font-weight-black white--text" >Tigo Money</h4></v-expansion-panel-header>
                         <v-expansion-panel-content class="white--text" >
                           Los depositos los puede hacer a los siguientes numero telefonicos : 98989898 - 98979797
+                          <v-form method="post" action='/store/carrito/check'>
+                            {% csrf_token %}
+                            <v-text-field
+                            type="hidden"
+                            id="tigopaga" name="tigopaga"
+                            value="tigopaga"
+                          ></v-text-field>
+                            <v-btn type="submit"  block color="white">Aceptar esta forma de pago</v-btn><br>
+                        </v-form>
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels><br>
@@ -186,6 +200,15 @@
                         <v-expansion-panel-header><h4 align="center" class="font-weight-black white--text" >Transferencias Bancarias</h4></v-expansion-panel-header>
                         <v-expansion-panel-content class="white--text" >
                           Por favor rellenar el formulario para ponernos en contacto con usted y asi poder realizar la transferencias.
+                          <v-form method="post" action='/store/carrito/check'>
+                            {% csrf_token %}
+                            <v-text-field
+                            type="hidden"
+                            id="transferencia" name="transferencia"
+                            value="transferencia"
+                          ></v-text-field>
+                            <v-btn type="submit"  block color="white">Aceptar esta forma de pago</v-btn><br>
+                        </v-form>
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels><br>
