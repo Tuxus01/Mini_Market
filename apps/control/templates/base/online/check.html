@@ -16,7 +16,10 @@
         <v-flex xs12 lg8 md8>
             <h2 align="center">Información de Envio</h2></br>
             <v-card class="mx-auto" >
+              <v-form method="post" action='/store/carrito/check'>
+                {% csrf_token %}
                 <v-container>
+
                     <v-row>
                       <v-col cols="12" xs12 lg12 md12>
                         <v-text-field
@@ -26,6 +29,8 @@
                           label="Nombre Completo"
                           required
                           color="pink"
+                          name = "first_name"
+                          id = "first_name"
                           value="{{ DIRECCION.nombre }}"
                         ></v-text-field>
                       </v-col>
@@ -37,6 +42,8 @@
                         label="E-mail"
                         required
                         color="pink"
+                        name = "email"
+                        id = "email"
                         value="{{ DIRECCION.email }}"
                         ></v-text-field>
                       </v-col>
@@ -49,6 +56,8 @@
                           label="Barrio/Colonia/Residencial"
                           required
                           color="pink"
+                          name = "city"
+                        id = "city"
                           value="{{ DIRECCION.direccion }}"
                         ></v-text-field>
                       </v-col>
@@ -60,6 +69,8 @@
                           label="Telefono"
                           required
                           color="pink"
+                          name = "phone_number"
+                          id = "phone_number"
                           value="{{ DIRECCION.telefono }}"
                         ></v-text-field>
                       </v-col>
@@ -71,6 +82,8 @@
                           label="Telefono"
                           required
                           color="pink"
+                          name = "phone_number2"
+                          id = "phone_number2"
                           value="{{ DIRECCION.telefono2 }}"
                         ></v-text-field>
                       </v-col>
@@ -81,16 +94,17 @@
                         value="{{ DIRECCION.direccion2 }}"
                         label="Dirección más detallada"
                         color="pink"
-                        
+                        name = "comment"
+                          id = "phone_number"
                       ></v-textarea>
                       </v-col>
 
 
-                    
+                      <v-btn type="submit"  block color="green">Guardar información de envio</v-btn><br>
               
                     </v-row>
                   </v-container>
-
+              </v-form>
 
 
 
@@ -380,24 +394,24 @@
                             <form action="#" method="post">
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
-                                        <input type="text" class="form-control" id="first_name" value="{{ DIRECCION.nombre }}" placeholder="Nombre Completo" required>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ DIRECCION.nombre }}" placeholder="Nombre Completo" required>
                                     </div>
                                    
                                     <div class="col-12 mb-3">
-                                        <input type="email" class="form-control" id="email" placeholder="Correo Electronico" value="{{ DIRECCION.email }}">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Correo Electronico" value="{{ DIRECCION.email }}">
                                     </div>
                                     
                                     
                                     <div class="col-12 mb-3">
-                                        <input type="text" class="form-control" id="city" placeholder="Barrio/Colonia/Residencial" value="{{ DIRECCION.direccion }}">
+                                        <input type="text" class="form-control" id="city" name="city" placeholder="Barrio/Colonia/Residencial" value="{{ DIRECCION.direccion }}">
                                     </div>
                                     
                                     <div class="col-md-6 mb-3">
-                                        <input type="number" class="form-control" id="phone_number" min="0" placeholder="Telefono" value="{{ DIRECCION.telefono }}">
+                                        <input type="number" class="form-control" id="phone_number" name="phone_number" min="0" placeholder="Telefono" value="{{ DIRECCION.telefono }}">
                                     </div>
 
                                      <div class="col-md-6 mb-3">
-                                        <input type="number" class="form-control" id="phone_number" min="0" placeholder="Telefono Opcional" value="{{ DIRECCION.telefono2 }}">
+                                        <input type="number" class="form-control" id="phone_number2" name="phone_number2" min="0" placeholder="Telefono Opcional" value="{{ DIRECCION.telefono2 }}">
                                     </div>
 
                                     <div class="col-12 mb-3">
@@ -517,7 +531,7 @@ const csrftoken = getCookie('csrftoken');
       return actions.order.capture().then(function(details) {
         // This function shows a transaction success message to your buyer.
         completeOrder()
-        alert('Transaction completed by ' + details.payer.name.given_name);
+        //alert('Transaction completed by ' + details.payer.name.given_name);
       });
     }
   }).render('#paypal-button-container');

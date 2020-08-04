@@ -301,6 +301,8 @@ def paymentComplete(request):
     orden.isv = isv_15 + isv_18
     orden.subtotal = subtotal
     orden.total = total
+    #Pago de Paypal es numero 4
+    orden.pago = 4
 
     #print(isv_15)
     #print(isv_18)
@@ -530,16 +532,15 @@ def carrito_list(request):
 def carrito_check(request):
     #Variable que habilita el pago por paypal
     status = 0
-    if request.method == 'POST':
-        metodo1 = request.POST.get('pagoencasa')
-        metodo2 = request.POST.get('tigopaga')
-        metodo3 = request.POST.get('transferencia')
-        print(metodo1,metodo2,metodo3)
-
-    print("Voy por carrito check")
-    if request.method == 'POST':
-        status = 0
-
+    #id para capturar el tipo de pago
+    #1 - Pagar al Entregar
+    #2 - Tigo Money
+    #3 - Transferencia Bancaria
+    pago_id=0
+    #Validar si el envio sera guardado al final de la funcion 0 inactivo 1 activo
+    envio_id = 0
+    #print(nombre + correo + ciudad + str(numero) + str(numero2) + comentario )
+    #Validamos si el usuario esta logueado y cuenta con una compra abierta
     if request.user.is_authenticated:
         instanacias = Carrito.objects.filter(activo=True).filter(owner=request.user)[:1]
         #Enviar item para finalizar pago paypal para funcion final
@@ -577,10 +578,87 @@ def carrito_check(request):
     else:
         cliente = ""
 
+    
+    if envio_id == 1:
+        print("Programar envio de producto y cerrar la orden y envio de correo de informacion")
+    ##Proceso de guardado para finalizar compra
+    #Proceso de desactivacion de compra
+    #orden = Carrito.objects.get(pk=instanacias)
+    #orden.activo = False
+
+
+    ###############################################Proceso final de guardado
+    #Captura de metodo de pago por
+    metodo1 = request.POST.get('pagoencasa')
+    metodo2 = request.POST.get('tigopaga')
+    metodo3 = request.POST.get('transferencia')
+    print(metodo1,metodo2,metodo3)
+    pago_id = 0
+    #Validar si el metodo de pago
+    if metodo1:
+        pago_id = 1
+    if metodo2:
+        pago_id = 2
+    if metodo3:
+        pago_id = 3
+        
+    #print(pago_id)
+
+
+    #Capturar Formulario de envio de productos.
+    guardar_envio  = Detalle_envio()
+    nombre = request.POST.get('first_name')
+    if nombre:
+        pass
+    else:
+        nombre = ""
+    correo = request.POST.get('email')
+    if correo:
+        pass
+        envio_id = 1
+        print("email capturado")
+    else:
+        correo = ""
+    ciudad = request.POST.get('city')
+    if ciudad:
+        pass
+    else:
+        ciudad = ""
+    numero = request.POST.get('phone_number')
+    if numero:
+        pass
+        envio_id = 1
+    else:
+        numero = ""
+    numero2 = request.POST.get('phone_number2')
+    if numero2:
+        pass
+    else:
+        numero2 = ""
+    comentario = request.POST.get('comment')
+    if comentario:
+        pass
+    else:
+        comentario = ""
+    
+    if envio_id == 1:
+        print("Guardamos la informacion de envio")
+        guardar_envio.codigo = paypal_fin #Instancia de pago final
+        guardar_envio.owner = request.user
+        guardar_envio.nombre = nombre
+        guardar_envio.telefono = numero
+        guardar_envio.telefono2 = numero2
+        guardar_envio.direccion = ciudad
+        guardar_envio.direccion2 = comentario
+        guardar_envio.email = correo
+        guardar_envio.save()
+        print("Direccion guardada")
+        return HttpResponseRedirect('/store/carrito/check')
+
     #print(total)
     ctx = {'ITEMS' : instanacias,'ITEMP':paypal_fin, 'DETALLES':detalle, 'ISV_18':isv_18 , 'ISV_15':isv_15 , 'SUBTOTAL': subtotal, 'TOTAL':total, 'DIRECCION':cliente, 'STATUS':status}
     return render(request, 'base/online/check.html' , ctx)
-
+    
 #Funcion encargada de agregar a la lista de compras de x usuario
 #@login_required(login_url='/login/')
 def AddCarrito(request):

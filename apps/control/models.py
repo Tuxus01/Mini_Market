@@ -385,7 +385,7 @@ def code_carrito():
 class Carrito(ModelBase):
     codigo = models.CharField('Codigo', max_length=60 , default=code_carrito, unique=True)
     cliente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="%(class)s_username" ,blank=True, null=True)
-    pago = models.IntegerField(choices=((1,("Efectivo")),(2,("Tarjeta"))),default=1)
+    pago = models.IntegerField(choices=((1,("Pagar al Entregar")),(2,("Tigo Money")),(3,("Transferencia Bancaria")),(4,("Paypal"))),default=1)
     isv = models.FloatField(verbose_name='ISV', blank=True, null=True)
     comentarios = models.TextField('Comentarios', max_length=1800, blank=True, null=True)
     subtotal = models.FloatField(verbose_name='Sub Total', blank=True, null=True)
