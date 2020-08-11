@@ -807,6 +807,10 @@ def Delete(request, Model, id):
         dele = Compras.objects.get(pk=id)
     if Model == "Ventas":
         dele = Ventas.objects.get(pk=id)
+    if Model == "Carrito_Detalle":
+        dele = Detalle_Carrito.objects.get(pk=id)
+
+
     
 
     #dele = Company.objects.get(pk=id)
@@ -818,7 +822,10 @@ def Delete(request, Model, id):
         else:
             dele.delete()
         
-        return HttpResponseRedirect('/base/'+ str(Model) +'/list')
+        if Model == "Carrito_Detalle":
+            return HttpResponseRedirect('/store/carrito/')
+        else:
+            return HttpResponseRedirect('/base/'+ str(Model) +'/list')
     except:
         print("Un Erro al eliminar registro")
 

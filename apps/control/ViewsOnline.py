@@ -586,7 +586,13 @@ def carrito_check(request):
     #orden = Carrito.objects.get(pk=instanacias)
     #orden.activo = False
 
+    ###Eliminar Objeto del carrito###
 
+
+
+
+
+    ###Eliminar Objeto del carrito###
     ###############################################Proceso final de guardado
     #Captura de metodo de pago por
     metodo1 = request.POST.get('pagoencasa')
@@ -603,7 +609,8 @@ def carrito_check(request):
         pago_id = 3
         
     #print(pago_id)
-
+    id_eliminar_objeto = request.POST.get('Eliminar')
+    
 
     #Capturar Formulario de envio de productos.
     guardar_envio  = Detalle_envio()

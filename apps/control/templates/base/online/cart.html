@@ -32,7 +32,7 @@
                           <td> {{ i.cantidad|floatformat:0|intcomma }}</td>
                           <td> {{ i.componente.nombre }} ( {{ i.componente.stock_actual|floatformat:2|intcomma }} ) </td>
                           <td> $ {{ i.componente.pre_venta|floatformat:0|intcomma }}</td>
-                          <td> <v-icon> mdi-delete </v-icon> </td>
+                          <td> <v-icon color="red" @Click="EleminarRegistro({{ i.id }})"> mdi-delete </v-icon> </td>
                         </tr>
                         {% endfor %}
                       </tbody>

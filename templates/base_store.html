@@ -298,6 +298,29 @@ var app = new Vue({
      
   },
   methods: {
+
+    EleminarRegistro(id){
+      console.log(id)
+      Swal.fire({
+        title: 'Eliminar  ?',
+        text: "Se quitara el componente del carrito",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Eliminarlo!',
+        cancelButtonText : 'Cancelar',
+      }).then((result) => {
+        if (result.value) {
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.' ,
+            'success',
+            window.location.href='/base/'+ 'Carrito_Detalle' +'/'+ id + '/delete/',
+          )
+        }
+      })
+    },
      
   }
 });
