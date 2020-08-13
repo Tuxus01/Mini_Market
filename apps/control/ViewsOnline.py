@@ -531,7 +531,9 @@ def carrito_list(request):
 #@login_required(login_url='/login/')
 def carrito_check(request):
     #Variable que habilita el pago por paypal
+    mensaje_gracias = ""
     status = 0
+    alerta = "off"
     #id para capturar el tipo de pago
     #1 - Pagar al Entregar
     #2 - Tigo Money
@@ -583,7 +585,7 @@ def carrito_check(request):
         print("Programar envio de producto y cerrar la orden y envio de correo de informacion")
     ##Proceso de guardado para finalizar compra
     #Proceso de desactivacion de compra
-    #orden = Carrito.objects.get(pk=instanacias)
+    orden = Carrito.objects.get(pk=instanacias)
     #orden.activo = False
 
     ###Eliminar Objeto del carrito###
@@ -662,11 +664,76 @@ def carrito_check(request):
         print("Direccion guardada")
         return HttpResponseRedirect('/store/carrito/check')
 
+    if pago_id > 0:
+        orden.isv = isv_15 + isv_18
+        orden.subtotal = subtotal
+        orden.total = total
+        orden.activo = False
+        orden.pago = int(pago_id)
+        orden.save()
+        mensaje_gracias = "Gracias por su compra"
+        alerta = "on"
+
+        #return HttpResponseRedirect('/store/')
+
+
     #print(total)
-    ctx = {'ITEMS' : instanacias,'ITEMP':paypal_fin, 'DETALLES':detalle, 'ISV_18':isv_18 , 'ISV_15':isv_15 , 'SUBTOTAL': subtotal, 'TOTAL':total, 'DIRECCION':cliente, 'STATUS':status}
+    if request.user.is_authenticated:
+        car_ord = Carrito.objects.filter(activo=True).filter(owner=request.user)[:1]
+    else:
+        car_ord = 0
+    car_int = Detalle_Carrito.objects.filter(codigo=car_ord)
+
+
+    ctx = {'ITEMS' : instanacias,'ITEMP':paypal_fin, 'DETALLES':detalle, 'ISV_18':isv_18 , 'ISV_15':isv_15 , 'SUBTOTAL': subtotal, 'TOTAL':total, 'DIRECCION':cliente, 'STATUS':status,'CAR_INT':car_int.count(),'MENSAJE':mensaje_gracias,'ALERT':alerta}
     return render(request, 'base/online/check.html' , ctx)
     
 #Funcion encargada de agregar a la lista de compras de x usuario
 #@login_required(login_url='/login/')
 def AddCarrito(request):
     pass
+
+
+
+#Para la url  store/Model/list
+#Filtros personalizados por SubCategorias
+def SubCategor(request, Model):
+    print(Model)
+    client_ip = request.META['REMOTE_ADDR']
+    if request.method == 'GET':
+        search = request.GET.get('buscar')
+        if search != None:
+            items = buscar(search)
+            paginator = Paginator(items, 20) # Show 25 contacts per page.
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
+            ctx = {'ITEMS' : items , 'page_obj': page_obj,}
+            return render(request, 'base/online/storeSearch.html' ,ctx )
+            #return HttpResponseRedirect('/store/search/' , ctx)
+    #Aplicando el buscador de componente globales      
+    subcategoria = SubCategoria.objects.all()
+    print(subcategoria)
+    articulos = []
+
+    if Model == "Otro":
+        componente = Componente.objects.filter(online=True)
+    else:
+        componente = Componente.objects.filter(online=True).filter(subcategoria__nombre=Model)
+    #Extraer componentes que cumplan con stock disponible para ventas
+    for i in componente:
+        if i.stock_actual > 0:
+            articulos.append(i)
+    
+    
+    
+    #Enviar cantidad de objetos por orden a template
+    ################Aplicando la compra sin loge
+    if request.user.is_authenticated:
+        car_ord = Carrito.objects.filter(activo=True).filter(owner=request.user)[:1]
+    else:
+        car_ord = 0
+    car_int = Detalle_Carrito.objects.filter(codigo=car_ord)
+    ctx = {'Lista': articulos,'SUBCATEGORIA': subcategoria, 'CAR_INT':car_int.count()}
+
+    return render(request,'base/online/personalizado.html',ctx)

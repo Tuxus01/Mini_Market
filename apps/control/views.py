@@ -472,6 +472,12 @@ def List(request, Model):
         th = [{'name':'id'},{'name':'Codigo'},{'name':'Fecha'},{'name':'Cliente'},{'name':'Pago'},{'name':'Isv'},{'name':'Sub Total'},{'name':'Total'},{'name':'Accion'}]
         ajaxData = [{"data":"id"},{"data":"codigo"},{"data":"date_create"},{"data":"cliente"},{"data":"pago"},{"data":"isv"},{"data":"subtotal"},{"data":"total"},{"data":"accion"}]
         tablename = "Ventas"
+    if Model == "VentasOnline":
+        data = Carrito.objects.all()
+        template = "base/list.html"
+        th = [{'name':'id'},{'name':'Codigo'},{'name':'Fecha'},{'name':'Cliente'},{'name':'Pago'},{'name':'Isv'},{'name':'Sub Total'},{'name':'Total'},{'name':'Accion'}]
+        ajaxData = [{"data":"id"},{"data":"codigo"},{"data":"date_create"},{"data":"cliente"},{"data":"pago"},{"data":"isv"},{"data":"subtotal"},{"data":"total"},{"data":"accion"}]
+        tablename = "Carrito"
     
     
     

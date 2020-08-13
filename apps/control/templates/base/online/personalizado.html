@@ -1,0 +1,103 @@
+{% extends 'base_store.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+
+
+{% block content %}
+
+
+<v-container grid-list-lg>
+<v-layout row wrap>
+
+  
+{% for i in Lista %}
+<v-flex xs12 lg2 md4>
+  <v-card :loading="loading" class="mx-auto my-12"  max-width="374">
+  <v-img height="250" src="/{{ i.imagen }}" ></v-img>
+  <v-card-title>{{ i.nombre }}</v-card-title>
+  <v-card-text>
+    <v-row
+      align="center"
+      class="mx-0"
+    >
+      <v-rating
+        :value="5"
+        color="amber"
+        dense
+        half-increments
+        readonly
+        size="14"
+      ></v-rating>
+
+      <div class="grey--text ml-4"> </div>
+    </v-row>
+
+    <div class="my-4 subtitle-1">
+      $ • {{ i.pre_venta|floatformat:2|intcomma }}
+    </div>
+
+    <div>{{ i.descripcion }}</div>
+  </v-card-text>
+
+  <v-divider class="mx-4"></v-divider>
+
+  
+
+  <v-card-text>
+    <v-chip-group
+      
+    >
+      {% if i.talla %}
+      <v-chip  dense small>{{ i.talla }}</v-chip>
+      {% endif %}
+
+      {% if i.categoria %}
+      <v-chip  dense small>{{ i.categoria }}</v-chip>
+      {% endif %}
+
+      {% if i.subcategoria %}
+      <v-chip  dense small>{{ i.subcategoria }}</v-chip>
+      {% endif %}
+
+      {% if i.color %}
+      <v-chip  dense small>{{ i.color }}</v-chip>
+      {% endif %}
+
+
+
+    </v-chip-group>
+  </v-card-text>
+
+  <v-card-actions align="center">
+    
+    <v-btn
+    
+      rounded 
+      color="green "
+      
+      @click="reserve"
+      dark
+      
+      href="{% url 'base:store_id' i.id %}"
+    >
+      Producto mas detallado
+    </v-btn>
+  </v-card-actions>
+</v-card>
+</v-flex>
+
+{% endfor %}
+
+
+</v-layout>
+</v-container>
+  
+
+{% endblock %}
+
+
+
+{% block script %}
+
+{% endblock %}

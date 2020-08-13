@@ -26,11 +26,14 @@
 
         <template>
             <v-app id="inspire">
+              <div class="d-sm-none" ></div>
               <v-navigation-drawer
                 v-model="drawer"
+                
                 :clipped="$vuetify.breakpoint.lgAndUp"
                 app
                 color="blue-grey lighten-5"
+                expand-on-hover
               >
                 <v-list >
 
@@ -82,6 +85,7 @@
                         v-for="(child, i) in item.children"
                         :key="i"
                         link
+                        :href="child.url"
                       >
                         <v-list-item-action v-if="child.icon">
                           <v-icon>[[ child.icon ]]</v-icon>
@@ -181,6 +185,7 @@
               </v-app-bar>
             </form>
                 <v-content >
+                  <div class="d-sm-none "></div>
                     {% block content %}
 
                     {% endblock %}
@@ -229,42 +234,26 @@ var app = new Vue({
         { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
       ],
       
-      items: [
-        {
-          text: 'Dashboard',
-          disabled: true,
-          url: '/',
-        },
-        {
-          text: 'Comap',
-          disabled: false,
-          url: '/base/company',
-        },
-        {
-          text: 'Comap',
-          disabled: false,
-          url: '/base/company',
-        },
-       
-      ],
+   
 
       dialog: false,
       drawer: true,
+      mini: true,
       items: [
         { icon: 'mdi-store', text: 'Inicio' , url : '/store' },
-        { icon: 'mdi-content-copy', text: 'Mas Productos' , url : '#'},
+       
         { icon: 'mdi-cart', text: 'Carrito ({{ CAR_INT }})', url : '/store/carrito' },
         {
           icon: 'mdi-chevron-up',
           'icon-alt': 'mdi-chevron-down',
           text: 'Categorias',
-          model: false,
+          model: true,
           children: [
-            { icon: 'mdi-', text: 'Mujer' , url : '#'},
-            { icon: 'mdi-', text: 'Hombre', url : '#' },
-            { icon: 'mdi-', text: 'Niños' , url : '#'},
-            { icon: 'mdi--', text: 'Niña' , url : '#'},
-            { icon: 'mdi--', text: 'Otros Productos' , url : '#'},
+            { icon: 'mdi-account', text: 'Mujer' , url : '/store/Mujer/list/'},
+            { icon: 'mdi-account-box', text: 'Hombre', url : '/store/Hombre/list/' },
+            { icon: 'mdi-shape-plus', text: 'Niños' , url : '/store/Nino/list/'},
+            { icon: 'mdi-snowman', text: 'Niña' , url : '/store/Nina/list/'},
+            { icon: 'mdi-shopping', text: 'Todos los Productos' , url : '/store/Otro/list/'},
             
        
           ],

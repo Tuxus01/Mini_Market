@@ -35,6 +35,7 @@ urlpatterns = [
     path('store/carrito/', carrito_list, name="carrito_list"),
     path('store/carrito/check', carrito_check, name="carrito_check"),
     path('store/complete', paymentComplete, name="complete"),
+    path('store/<str:Model>/list/', SubCategor , name="personalizado"),
     
 
 ]

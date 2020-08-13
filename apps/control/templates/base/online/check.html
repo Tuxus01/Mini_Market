@@ -241,7 +241,12 @@
 
     </v-layout>
 </v-container>
+
+
 {% endif %}
+
+
+
 
 
 
@@ -470,6 +475,23 @@
 
 
 {% block script %}
+{% if ALERT == "on" %}
+<script>
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title : '{{ MENSAJE }}',
+        showConfirmButton: false,
+        timer: 10000,
+    })
+    window.location.href = "/store/"
+    </script>
+{% endif %}
+
+
+
+
+
 <script
     src="https://www.paypal.com/sdk/js?client-id=ARA3Z_RRJi1mLxT2AfYNp4ozoYeRGQO2ngo23TxgV3bzQ0FqNHopCjyoDxCOXAueYDQYdIQUgR7L1Hfe"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
 </script>
