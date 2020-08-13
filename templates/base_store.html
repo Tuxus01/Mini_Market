@@ -34,6 +34,8 @@
                 app
                 color="blue-grey lighten-5"
                 expand-on-hover
+                permanent
+                touchless="true"
               >
                 <v-list >
 
@@ -125,7 +127,8 @@
                 <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
                 <v-toolbar-title
                   style="width: 300px"
-                  class="ml-0 pl-4"
+                  class="ml-0 pl-4 hidden-sm-and-down"
+                
                 >
                   <span class="hidden-sm-and-down">Mini Market</span>
                 </v-toolbar-title>
@@ -136,13 +139,13 @@
                   hide-details
                   prepend-inner-icon="mdi-magnify"
                   label="Buscar.. Ejm Camisa , Pantalon ..."
-                  class="hidden-sm-and-down"
+                  dense
                   type="search"
                   id="buscar" name="buscar"
 
                 ></v-text-field>
                 
-                <v-spacer></v-spacer>
+                <v-spacer  class="hidden-sm-and-down"></v-spacer>
 
              
                   
