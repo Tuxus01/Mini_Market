@@ -391,6 +391,9 @@ class Carrito(ModelBase):
     subtotal = models.FloatField(verbose_name='Sub Total', blank=True, null=True)
     total = models.FloatField(verbose_name='Total', blank=True, null=True)
     activo = models.BooleanField(default=True) #Estatus de compras activas 
+    estado = models.IntegerField(choices=((1,("Compra Iniciada")),(2,("Confimacion de Compra")),(3,("Proceso de envio")),(4,("Entregado"))),default=1)
+
+
     def toJSON(self):
         item = model_to_dict(self,exclude=['comentarios'],fields=['id','codigo','cliente','pago','isv','subtotal','total','date_create'])
         if self.cliente != None:

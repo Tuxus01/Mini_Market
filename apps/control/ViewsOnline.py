@@ -597,6 +597,7 @@ def carrito_check(request):
     ###Eliminar Objeto del carrito###
     ###############################################Proceso final de guardado
     #Captura de metodo de pago por
+    Tipo_Pago = "" #Variable creada para enviarlo como texto al template html
     metodo1 = request.POST.get('pagoencasa')
     metodo2 = request.POST.get('tigopaga')
     metodo3 = request.POST.get('transferencia')
@@ -605,10 +606,13 @@ def carrito_check(request):
     #Validar si el metodo de pago
     if metodo1:
         pago_id = 1
+        Tipo_Pago = "Pago en Casa"
     if metodo2:
         pago_id = 2
+        Tipo_Pago = "Tigo Money"
     if metodo3:
         pago_id = 3
+        Tipo_Pago = "Transferencia Bancaria"
         
     #print(pago_id)
     id_eliminar_objeto = request.POST.get('Eliminar')
@@ -665,6 +669,7 @@ def carrito_check(request):
         return HttpResponseRedirect('/store/carrito/check')
 
     if pago_id > 0:
+        ##Verificacion de envios sino se actuliza la direccion en esta nueva compra
         orden.isv = isv_15 + isv_18
         orden.subtotal = subtotal
         orden.total = total
@@ -673,6 +678,9 @@ def carrito_check(request):
         orden.save()
         mensaje_gracias = "Gracias por su compra"
         alerta = "on"
+        #Enviar email de confirmacion de comra
+        SendEmailT= SendEmailOnlineThread(orden.id, request.user,Tipo_Pago, 1)
+        SendEmailT.start()
 
         #return HttpResponseRedirect('/store/')
 

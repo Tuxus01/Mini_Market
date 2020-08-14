@@ -106,3 +106,52 @@ class SendEmailInfoThread(threading.Thread):
         #msg.attach_file(self.adjunto)
         #msg.attach_alternative(html_content, "text/html")
         msg.send()
+
+
+##Email de venta Online
+
+#Envio del email al administrador reportando acceso no autorizado
+class SendEmailOnlineThread(threading.Thread):
+    def __init__(self, id, usuario,Tipo_Pago, Proceso ):
+        threading.Thread.__init__(self)
+        #self.adjunto = adjunto
+        self.id = id
+        self.usuario = usuario
+        self.Tipo_Pago = Tipo_Pago
+        self.Proceso = Proceso
+        print(self.id)
+        
+    def run(self):
+        proceso = ""
+        if self.Proceso == 1:
+            proceso = "Compra Iniciada"
+        if self.Proceso == 2:
+            proceso = "Confimacion de Compra"
+        if self.Proceso == 3:
+            proceso = "Proceso de envio"
+        if self.Proceso == 4:
+            proceso = "Entregado"
+
+
+        ordenventa = Carrito.objects.get(pk=self.id)
+        detalle = Detalle_Carrito.objects.filter(codigo=ordenventa.id)
+        
+        #Detalle de envio
+        cliente = Detalle_envio.objects.filter(owner=self.usuario).last()
+        print(cliente.email)
+        
+
+        html_content = loader.render_to_string('base/online/SendEmailOnline.html', {'VENTA':ordenventa, 'DETALLE':detalle, 'CLIENTE':cliente, 'Tipo_Pago':self.Tipo_Pago, 'PROCESO':proceso})
+        #msg.attach_alternative(html_content, "text/html")
+        #msg.send()
+
+        #Envio de Email
+        subject, from_email, to = 'Orden Online', 'ngdz01@gmail.com', str(cliente.email)
+        #text_content = 'Compra : {0} <br> Por el monto total 100.00 <br> '.format(self.Nombre_camara)
+        #html_content = '<p>Se autorizo compra al credio al numero de factura: {0} </p> '.format(self.Nombre_camara)
+        msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
+        #msg.attach_file(self.adjunto)
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        
+        
