@@ -36,6 +36,9 @@ urlpatterns = [
     path('store/carrito/check', carrito_check, name="carrito_check"),
     path('store/complete', paymentComplete, name="complete"),
     path('store/<str:Model>/list/', SubCategor , name="personalizado"),
+
+    #Online VUe
+    path('store2/',storeVue,name='storeVue'),
     
 
 ]

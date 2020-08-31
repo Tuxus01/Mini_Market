@@ -49,6 +49,10 @@ from .ViewsOnline import *
 from social_django.models import UserSocialAuth
 
 
+def storeVue(request):
+    return render(request, 'base/vue/index.html')
+
+
 class LoginFormView(LoginView):
     template_name = 'base/login.html'
     success_url = reverse_lazy('base:index')

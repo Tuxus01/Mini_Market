@@ -23,7 +23,12 @@ class ComponenteViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
 
 
-
+class ComponenteALLViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.DjangoModelPermissions,)
+    queryset = Componente.objects.all().order_by('-id')
+    serializer_class = ComponenteAllSerializer
+    search_fields = ['=serie','nombre','descripcion','color__nombre','categoria__nombre','subcategoria__nombre','presentacion__nombre','talla__nombre']
+    filter_backends = (filters.SearchFilter,)
 
 
 class DetalleCompraViewSet(viewsets.ModelViewSet):
@@ -35,8 +40,6 @@ class DetalleCompraViewSet(viewsets.ModelViewSet):
     search_fields = ['=compra__id', '=componente__serie']
     filter_backends = (filters.SearchFilter,)
     #filter_fields = ('compra',)
-
-
 
 
 class DetalleCompraViewSet1(viewsets.ModelViewSet):
@@ -62,7 +65,6 @@ class DetalleVentasViewSet(viewsets.ModelViewSet):
     #filter_fields = ('compra',)
 
 
-
 class DetalleVentasViewSet1(viewsets.ModelViewSet):
     #authentication_classes = [SessionAuthentication, BasicAuthentication]
     #permission_classes = [IsAuthenticated]
@@ -74,8 +76,6 @@ class DetalleVentasViewSet1(viewsets.ModelViewSet):
     #filter_fields = ('compra',)
 
 
-
-
 class ClienteViewSet(viewsets.ModelViewSet):
     #authentication_classes = [SessionAuthentication, BasicAuthentication]
     #permission_classes = [IsAuthenticated]
@@ -85,8 +85,6 @@ class ClienteViewSet(viewsets.ModelViewSet):
     search_fields = ['identidad', 'nombre', 'apellidos' , 'telefono','email']
     filter_backends = (filters.SearchFilter,)
     #filter_fields = ('compra',)
-
-
 
 
 class VentasViewSet(viewsets.ModelViewSet):
@@ -135,4 +133,12 @@ class VentasViewSet(viewsets.ModelViewSet):
         
         
         return Response(serializer.data)
-        
+
+
+
+class CarritoViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.DjangoModelPermissions,)
+    queryset = Carrito.objects.all().order_by('-id')
+    serializer_class = CarritoSerializer
+    search_fields = ['=owner__id','=activo']
+    filter_backends = (filters.SearchFilter,)

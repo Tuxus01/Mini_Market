@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+
+  <!--############################### TE GUSTA LEER EL CODIGO AJENO ? #####################################-->
+  <!--############################### SUERTE ENTENDIENDO LO QUE HICE :(  #####################################-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+  <!-- Fotorama from CDNJS, 19 KB -->
+  <link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  <!--Video JS-->
+  <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
+
+  <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+  <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+  <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
+
+
+  <!--push notification-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.5/push.js"></script>
+{% block head %}
+{% endblock %}
+</head>
+
+<body>
+  <div id="app" >
+    <template>
+      <v-app id="inspire"dark >
+          <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dark dense src="#">
+            <v-app-bar-nav-icon class="hidden-sm-and-down" @click.stop="drawer2 = !drawer2"></v-app-bar-nav-icon>
+            <v-toolbar-title class="hidden-sm-and-down" style="width: 300px" class="ml-0 pl-4">
+              <span >Transfer&Print </span>
+            </v-toolbar-title>
+            <v-divider inset class="mx-1" vertical></v-divider>
+
+            <v-text-field
+            flat
+            v-model="search"
+            v-on:clik="producto_buscar()"
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-magnify"
+            label="Buscar.. Ejm Camisa , Pantalon ..."
+            dense
+          ></v-text-field>
+            
+            <v-spacer></v-spacer>
+
+            {% if user.is_authenticated %}
+           
+            <v-divider inset class="mx-4" vertical></v-divider>
+            <v-btn  href="/logout" small fab color="red">
+              <v-icon>mdi-logout</v-icon>
+            </v-btn>
+            <v-divider inset class="mx-4" vertical></v-divider>
+            {% if user.first_name == "" %}
+              {{ user }}
+            {% else %}
+              {{ user.first_name }} {{ user.last_name}}</br>
+            {% endif %}
+
+            {% else %}
+            <v-btn href="" icon>
+              <v-icon>mdi-facebook</v-icon>
+              </v-badge>
+            </v-btn>
+            {% endif %}
+          </v-app-bar>
+        
+          [[getProductSearch]]
+        <v-main >
+          {% block content %}
+
+          {%  endblock %}
+        </v-main>
+      </v-app>
+    </template>
+  </div>
+
+
+
+
+  <!--Push Notifications-->
+  <script src="{% static 'pushjs/push.js' %}"></script>
+
+
+  <!--Informacion del contenido a mostrar -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+
+
+  {% block script %}
+
+  {% endblock %}
+
+
+  <script>
+    var CSRF_TOKEN = '{{ csrf_token }}'
+    var ID_Token = {{ user.id }}
+  </script>
+
+
+  <script>
+
+    var app = new Vue({
+
+      delimiters: ['[[', ']]'],
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: {
+        //Navegacion entre opciones, Lista, Dashboard, Table, Kamban, TimeLine, Image
+        bottomNav: 0,
+        Productos_ALL : [],
+        Productos_ID :[],
+        search:'',
+        Productos_Search : [],
+
+        //Drawer de productos
+        dialogProducto: false,
+
+      
+
+
+      },
+
+
+      watch: {
+      },
+
+      computed: {
+        getProductSearch: function () {
+          if (this.search != '') {
+            this.producto_buscar()
+            return this.search
+          }
+        },
+        
+
+      },
+      mounted() {
+        this.producto_all()
+        this.Carrito_activo()
+      },
+
+      methods: {
+        async producto_all(){
+          let productos = await axios.get('/api/componenteAll/')
+          //console.log(productos.data)
+          this.Productos_ALL=productos.data
+        },
+        async producto_id(id){
+          this.dialogProducto = true
+          let productos = await axios.get(`/api/componenteAll/${id}/`)
+          //console.log(productos.data)
+          this.Productos_ID=productos.data
+        },
+
+        async producto_buscar(){
+          this.bottomNav = 2
+          let productos = await axios.get(`/api/componenteAll/?search=${this.search}`)
+          //console.log(productos.data)
+          this.Productos_Search=productos.data
+        },
+
+
+        //Buscador de carrito
+        async Carrito_activo(){
+          //this.bottomNav = 2
+          let carrito = await axios.get(`/api/carrito/?search=${ID_Token}+1`)
+          console.log(carrito.data[0])
+          //this.Productos_Search=productos.data
+        },
+
+        
+
+      },
+    });
+
+
+  </script>
+</body>
+
+</html>

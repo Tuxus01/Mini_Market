@@ -1,0 +1,296 @@
+{% extends 'StoreBaseVue.html' %}
+{% load static %}
+{% load humanize %}
+{% load l10n %}
+
+
+{% block content %}
+<!--Drawer De View de productos -->
+
+<!--Dialog Para agregar y modificar proyectos creados -->
+<template>
+    <v-row>
+        <v-dialog color="" v-model="dialogProducto" fullscreen hide-overlay transition="dialog-bottom-transition">
+            <v-card class="d-inline-block mx-auto" outlined>
+                <v-toolbar dark>
+                    <v-btn icon dark @click="dialogProducto = false">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>Descripción del producto </v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                    </v-toolbar-items>
+                </v-toolbar>
+
+
+
+                <v-container grid-list-lg>
+                    <v-layout row wrap>
+
+                        <v-flex xs12 lg5 md5>
+                            <v-card class="mx-auto">
+                                <template>
+                                    <v-carousel cycle height="700" hide-delimiter-background show-arrows-on-hover>
+                                        <v-carousel-item v-if="Productos_ID.imagen" :src="Productos_ID.imagen"
+                                            reverse-transition="fade-transition" transition="fade-transition">
+                                        </v-carousel-item>
+
+                                        <v-carousel-item v-if="Productos_ID.imagen2" :src="Productos_ID.imagen2"
+                                            reverse-transition="fade-transition" transition="fade-transition">
+                                        </v-carousel-item>
+
+                                        <v-carousel-item v-if="Productos_ID.imagen3" :src="Productos_ID.imagen3"
+                                            reverse-transition="fade-transition" transition="fade-transition">
+                                        </v-carousel-item>
+
+                                        <v-carousel-item v-if="Productos_ID.imagen4" :src="Productos_ID.imagen4"
+                                            reverse-transition="fade-transition" transition="fade-transition">
+                                        </v-carousel-item>
+
+                                        <v-carousel-item v-if="Productos_ID.imagen5" :src="Productos_ID.imagen5"
+                                            reverse-transition="fade-transition" transition="fade-transition">
+                                        </v-carousel-item>
+
+                                        <v-carousel-item v-if="Productos_ID.imagen6" :src="Productos_ID.imagen6"
+                                            reverse-transition="fade-transition" transition="fade-transition">
+                                        </v-carousel-item>
+
+
+                                    </v-carousel>
+                                </template>
+                            </v-card>
+                        </v-flex>
+
+                        <v-flex xs12 lg5 md5>
+                            <v-card class="mx-auto">
+                                <v-card-text>
+                                    <div>Marcas y Productos seleccionados</div>
+                                    <p class="display-1 text--primary">
+                                        [[ Productos_ID.nombre ]]
+                                    </p>
+
+                                    <p class="display-1 text--primary">
+                                        $ [[ Productos_ID.pre_venta ]]
+                                    </p>
+
+
+                                    <div class="">
+                                        <v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon>
+                                        Existencia : [[ Productos_ID.stock_actual ]]
+                                        <div v-if="Productos_ID.subcategoria">
+                                            <br>
+                                            <v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon>
+                                            Sub Categoria : [[ Productos_ID.subcategoria.nombre ]]
+                                        </div>
+                                        <div v-if="Productos_ID.talla">
+                                            <br>
+                                            <v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon>
+                                            Talla : [[ Productos_ID.talla.nombre ]]
+                                        </div>
+                                        <div v-if="Productos_ID.color">
+                                            <br>
+                                            <v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon>
+                                            Color :[[ Productos_ID.color.nombre ]]
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <br>
+                                    <div class="text--primary">
+                                        [[ Productos_ID.descripcion ]]
+                                    </div>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-flex xs12>
+                                        <v-subheader id="qty" name="quantity" class="pl-0">Cantidad de Producto
+                                        </v-subheader>
+                                        <br>
+                                        <v-slider id="qty" name="quantity" thumb-color="green" thumb-label="always"
+                                            min=1 max=10></v-slider>
+                                        <br>
+                                        <v-btn type="submit" color="green">
+                                            <v-icon>mdi-cart</v-icon> Agregar
+                                        </v-btn>
+                                        <v-btn href="{% url 'social:begin' 'facebook' %}" color="blue">
+                                            <v-icon>mdi-facebook</v-icon> Incia Sesion para agregar
+                                        </v-btn>
+                                    </v-flex>
+                                </v-card-actions>
+                            </v-card>
+                        </v-flex>
+
+
+                        <v-flex xs12 lg12 md12>
+                            <v-card class="mx-auto">
+                                Detalles y productos relacionados
+                            </v-card>
+                        </v-flex>
+            </v-card>
+        </v-dialog>
+    </v-row>
+</template>
+
+<!--Drawer De View de productos-->
+<!--########################################### BOTON NAVEGACION DASHBOARD #######################################-->
+<!-- Botones de navegacion -->
+<v-bottom-navigation  v-model="bottomNav" dark shift fixed grow>
+    <v-btn>
+        <span>Principal</span>
+        <v-icon>mdi-tablet-dashboard</v-icon>
+    </v-btn>
+    <v-btn>
+        <span>Ver más</span>
+        <v-icon>mdi-shopping</v-icon>
+    </v-btn>
+    <v-btn>
+        <span>Buscar</span>
+        <v-icon>mdi-eye</v-icon>
+    </v-btn>
+    <v-btn>
+        <span>Carrito</span>
+        <v-icon>mdi-cart</v-icon>
+    </v-btn>
+</v-bottom-navigation>
+
+
+<div v-if="bottomNav=== 0">
+    <v-container grid-list-lg>
+        <v-layout row wrap>
+            
+            <v-flex xs12 lg2 md4 v-for="i in Productos_ALL">
+                <v-card v-if="i.stock_actual > 0" color="blue-grey lighten-5" class="mx-auto my-12" max-width="470">
+                    <v-img :src="i.imagen " aspect-ratio="1.7" height="300px"></v-img>
+                    <v-card-title>[[ i.nombre ]]</v-card-title>
+                    <v-card-text>
+                        <v-row align="center" class="mx-0">
+                            <v-rating :value="5" color="amber" dense half-increments readonly size="14"></v-rating>
+                            <div class="grey--text ml-4"> </div>
+                        </v-row>
+                        <div class="my-4 subtitle-1 green--text">
+                            L • [[i.pre_venta]]
+                        </div>
+
+                        <div>
+                            <h4>[[i.descripcion]]</h4>
+                        </div>
+                    </v-card-text>
+
+                    <v-divider class="mx-4"></v-divider>
+
+                    <v-card-text>
+                        <v-chip-group>
+                            <div v-if="i.talla">
+                                <v-chip dense small>[[ i.talla.nombre ]]</v-chip>
+                            </div>
+
+                            <div v-if="i.categoria">
+                                <v-chip dense small>[[i.categoria.nombre ]]</v-chip>
+                            </div>
+
+                            <div v-if="i.subcategoria">
+                                <v-chip dense small>[[i.subcategoria.nombre ]]</v-chip>
+                            </div>
+
+                            <div v-if="i.color">
+                                <v-chip dense small>[[i.color.nombre ]]</v-chip>
+                            </div>
+                        </v-chip-group>
+                    </v-card-text>
+
+
+                    <v-card-actions>
+                        <v-btn text dark color="green" @click="producto_id(i.id)">
+                            <v-icon>mdi-eye</v-icon>
+                        </v-btn>
+                        <v-btn text dark color="deep-purple">
+                            <v-icon>mdi-cart</v-icon>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                       
+                    </v-card-actions>
+
+
+                </v-card>
+            </v-flex>
+            
+        </v-layout><br>
+    </v-container>
+</div>
+
+
+
+<div v-if="bottomNav===2">
+    <div v-if="Productos_Search">
+        <h1 align="center"> Lista de Productos Encontrados</h1>
+        <v-flex v-for="i in Productos_Search">
+            <v-card color="blue-grey lighten-5" class="mx-auto my-2" max-width="1000">
+
+                <v-list-item three-line>
+                    <v-list-item-content>
+                        <div v-if="i.stock_actual > 0 ">
+                            <div class="overline mb-4 black--text">
+                                Cantidad Disponibles :[[ i.stock_actual ]] Precio Venta: [[i.pre_venta ]]
+                            </div>
+                        </div>
+                        <div v-else class="text-decoration-line-through">
+                            <div class="overline mb-4 black--text">
+                                Cantidad Disponibles :[[ i.stock_actual ]] Precio Venta: [[i.pre_venta ]]
+                            </div>
+                        </div>
+                        <v-list-item-title class="headline mb-1">
+                            <div v-if="i.stock_actual > 0 ">
+                                [[ i.nombre ]]
+                            </div>
+                            <div v-else class="text-decoration-line-through">
+                                [[ i.nombre ]]
+                            </div>
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            <h4>Precio Venta: [[ i.pre_venta ]]</h4><br>
+
+                        </v-list-item-subtitle>
+                        <v-list-item-subtitle class=" green--text">
+
+                            [[ i.descripcion ]]
+
+                        </v-list-item-subtitle>
+
+                        <div class="">
+                            <div v-if="i.subcategoria">
+                                <br>
+                                <v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon> [[
+                                i.subcategoria.nombre ]]
+                            </div>
+                            <div v-if="i.talla">
+
+                                <v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon> Talla : [[
+                                i.talla.nombre ]]<br>
+                            </div>
+                            <div v-if="i.color">
+
+                                <v-icon dense small large color="green">mdi-checkbox-blank-circle</v-icon> Color : [[
+                                i.color.nombre ]]<br>
+                            </div>
+                        </div>
+
+                    </v-list-item-content>
+                    <v-list-item-avatar tile size="140" color="grey">
+                        <v-img height="150" width="150" :src="i.imagen"></v-img>
+                    </v-list-item-avatar>
+                </v-list-item>
+
+                <v-card-actions v-if="i.stock_actual > 0">
+                    <v-btn color="green" text @click="producto_id(i.id)">Ver Mas Detalle <v-icon right dark>mdi-eye
+                        </v-icon>
+                    </v-btn>
+                    <v-btn color="blue" text @click="producto_id(i.id)">Agregar al Carrito <v-icon right dark>mdi-cart
+                        </v-icon>
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+            <v-divider vertical></v-divider>
+        </v-flex><br>
+    </div>
+
+</div>
+
+{%  endblock %}
