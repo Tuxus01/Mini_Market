@@ -39,9 +39,10 @@
 
 <body>
   <div id="app" >
+    [[getProductSearch]]
     <template>
       <v-app id="inspire"dark >
-          <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dark dense src="#">
+          <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dark  src="">
             <v-app-bar-nav-icon class="hidden-sm-and-down" @click.stop="drawer2 = !drawer2"></v-app-bar-nav-icon>
             <v-toolbar-title class="hidden-sm-and-down" style="width: 300px" class="ml-0 pl-4">
               <span >Transfer&Print </span>
@@ -59,10 +60,27 @@
             dense
           ></v-text-field>
             
-            <v-spacer></v-spacer>
-
+            
+          <v-divider inset class="mx-4" vertical></v-divider>
             {% if user.is_authenticated %}
            
+
+        
+          <v-badge
+            color="deep-purple accent-4"
+            :content="carrito_cantidad_objecto"
+            >
+            <v-icon
+            @click="bottomNav=3"
+            color="grey lighten-1"
+            >
+             mdi-cart
+           </v-icon>
+          </v-badge>
+          
+           
+
+
             <v-divider inset class="mx-4" vertical></v-divider>
             <v-btn  href="/logout" small fab color="red">
               <v-icon>mdi-logout</v-icon>
@@ -82,7 +100,7 @@
             {% endif %}
           </v-app-bar>
         
-          [[getProductSearch]]
+         
         <v-main >
           {% block content %}
 
@@ -130,9 +148,15 @@
         Productos_ID :[],
         search:'',
         Productos_Search : [],
-
+        //Seccion para control y pago del carrito
+        Carrito_id : 0,
+        carritoDetalle : [],
+        carrito_cantidad_objecto : 0,
+        e1: 1,
+         //Seccion para control y pago del carrito
         //Drawer de productos
         dialogProducto: false,
+
 
       
 
@@ -150,20 +174,19 @@
             return this.search
           }
         },
-        
-
       },
       mounted() {
         this.producto_all()
         this.Carrito_activo()
       },
-
       methods: {
+
         async producto_all(){
           let productos = await axios.get('/api/componenteAll/')
           //console.log(productos.data)
           this.Productos_ALL=productos.data
         },
+
         async producto_id(id){
           this.dialogProducto = true
           let productos = await axios.get(`/api/componenteAll/${id}/`)
@@ -178,14 +201,27 @@
           this.Productos_Search=productos.data
         },
 
-
         //Buscador de carrito
         async Carrito_activo(){
           //this.bottomNav = 2
-          let carrito = await axios.get(`/api/carrito/?search=${ID_Token}+1`)
-          console.log(carrito.data[0])
-          //this.Productos_Search=productos.data
+            let carrito = await axios.get(`/api/carrito/?search=${ID_Token}+1`)
+            console.log(carrito.data[0])
+            this.Carrito_id = carrito.data[0].id
+            //this.Productos_Search=productos.data
+            if(this.Carrito_id > 0){
+              let carritodetalle = await axios.get(`/api/carritoDetalle/?search=${this.Carrito_id}`)
+              this.carritoDetalle = carritodetalle.data
+              //Cantidad de objecto en carrito actual
+              this.carrito_cantidad_objecto = carritodetalle.data.length
+              //console.log(this.carrito_cantidad_objecto)
+            }
         },
+
+        Carrito_add(id){
+
+        },
+
+        
 
         
 

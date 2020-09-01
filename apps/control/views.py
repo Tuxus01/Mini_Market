@@ -405,10 +405,10 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return HttpResponseRedirect('/store')
+            return HttpResponseRedirect('/store2')
     else:
         form = SignUpForm()
-    return render(request, 'base/signup.html', {'form': form})
+    return render(request, 'base/vue/signup.html', {'form': form})
 
 
 

@@ -14,5 +14,7 @@ router.register('ventas', VentasViewSet )
 
 
 router.register('carrito', CarritoViewSet )
+router.register('carritoDetalle', Detalle_CarritoViewSet )
+
 
 urlpatterns = router.urls

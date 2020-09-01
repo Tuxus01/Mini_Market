@@ -62,7 +62,7 @@
                         </v-flex>
 
                         <v-flex xs12 lg5 md5>
-                            <v-card class="mx-auto">
+                            <v-card class="mx-auto ">
                                 <v-card-text>
                                     <div>Marcas y Productos seleccionados</div>
                                     <p class="display-1 text--primary">
@@ -156,15 +156,11 @@
     <v-container grid-list-lg>
         <v-layout row wrap>
             
-            <v-flex xs12 lg2 md4 v-for="i in Productos_ALL">
-                <v-card v-if="i.stock_actual > 0" color="blue-grey lighten-5" class="mx-auto my-12" max-width="470">
+            <v-flex xs12 lg2 md4 v-for="i in Productos_ALL"  >
+                <v-card v-if="i.stock_actual > 0" color="blue-grey lighten-5" class="mx-auto my-12 rounded-xl" elevation="24" max-width="470" >
                     <v-img :src="i.imagen " aspect-ratio="1.7" height="300px"></v-img>
                     <v-card-title>[[ i.nombre ]]</v-card-title>
                     <v-card-text>
-                        <v-row align="center" class="mx-0">
-                            <v-rating :value="5" color="amber" dense half-increments readonly size="14"></v-rating>
-                            <div class="grey--text ml-4"> </div>
-                        </v-row>
                         <div class="my-4 subtitle-1 green--text">
                             L • [[i.pre_venta]]
                         </div>
@@ -199,10 +195,10 @@
 
                     <v-card-actions>
                         <v-btn text dark color="green" @click="producto_id(i.id)">
-                            <v-icon>mdi-eye</v-icon>
+                            <v-icon>mdi-eye</v-icon> Ver
                         </v-btn>
                         <v-btn text dark color="deep-purple">
-                            <v-icon>mdi-cart</v-icon>
+                            <v-icon>mdi-cart</v-icon> Add
                         </v-btn>
                         <v-spacer></v-spacer>
                        
@@ -220,9 +216,9 @@
 
 <div v-if="bottomNav===2">
     <div v-if="Productos_Search">
-        <h1 align="center"> Lista de Productos Encontrados</h1>
+        
         <v-flex v-for="i in Productos_Search">
-            <v-card color="blue-grey lighten-5" class="mx-auto my-2" max-width="1000">
+            <v-card color="blue-grey lighten-5" class="mx-auto my-2 rounded-xl" max-width="1000">
 
                 <v-list-item three-line>
                     <v-list-item-content>
@@ -293,4 +289,115 @@
 
 </div>
 
+
+<div v-if="bottomNav===3">
+    <div v-if="Productos_Search">
+        
+        <v-flex >
+            <v-card color="blue-grey lighten-5" class="mx-auto my-2 rounded-xl" max-width="1800">
+    <template>
+        <v-stepper v-model="e1">
+          <v-stepper-header>
+            <v-stepper-step :complete="e1 > 1" step="1">Revisión de carrito</v-stepper-step>
+      
+            <v-divider></v-divider>
+      
+            <v-stepper-step :complete="e1 > 2" step="2">Dirección de Envio</v-stepper-step>
+      
+            <v-divider></v-divider>
+      
+            <v-stepper-step step="3">Modo de pago</v-stepper-step>
+          </v-stepper-header>
+      
+          <v-stepper-items>
+            <v-stepper-content step="1">
+          
+
+              <template>
+                <div>
+                    <v-simple-table
+                    dense
+                    fixed-header
+                    height
+                    >
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th  class="text-left">Item</th>
+                              <th class="text-left">Cantidad</th>
+                              <th class="text-left">Descripción</th>
+                              <th class="text-left">Precio</th>
+                              <th class="text-left">Acción</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="item in carritoDetalle ">
+                            <td> <v-img :src="item.componente.imagen" Width="80" Height="59" ></v-img></td>
+                              <td> [[ item.cantidad ]] </td>
+                              <td> [[ item.componente.nombre ]]</td>
+                              <td> L. [[ item.precio_v ]] </td>
+                              <td> <v-icon color="red" @Click=""> mdi-delete </v-icon> </td>
+                           
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+              
+                 
+                </div>
+              </template>
+
+            
+          
+              <v-btn
+                color="primary"
+                @click="e1 = 2"
+              >
+                Continue
+              </v-btn>
+      
+              <v-btn text>Cancel</v-btn>
+            </v-stepper-content>
+      
+            <v-stepper-content step="2">
+              <v-card
+                class="mb-12"
+                color="grey lighten-1"
+                height="200px"
+              ></v-card>
+      
+              <v-btn
+                color="primary"
+                @click="e1 = 3"
+              >
+                Continue
+              </v-btn>
+      
+              <v-btn text>Cancel</v-btn>
+            </v-stepper-content>
+      
+            <v-stepper-content step="3">
+              <v-card
+                class="mb-12"
+                color="grey lighten-1"
+                height="200px"
+              ></v-card>
+      
+              <v-btn
+                color="primary"
+                @click="e1 = 1"
+              >
+                Continue
+              </v-btn>
+      
+              <v-btn text>Cancel</v-btn>
+            </v-stepper-content>
+          </v-stepper-items>
+        </v-stepper>
+      </template>
+      </v-card>
+    </v-flex>
+    </div>
+
+</div>
 {%  endblock %}

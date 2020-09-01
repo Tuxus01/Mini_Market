@@ -101,6 +101,11 @@ class CarritoSerializer(serializers.ModelSerializer):
 		model = Carrito
 		fields ='__all__'
 
+class Detalle_CarritoSerializer(serializers.ModelSerializer):
+    componente = ComponenteSerializer()
+    class Meta:
+        model = Detalle_Carrito
+        fields ='__all__'
 
 
 ##Classe para VUE ONLINE

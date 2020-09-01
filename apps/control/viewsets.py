@@ -142,3 +142,11 @@ class CarritoViewSet(viewsets.ModelViewSet):
     serializer_class = CarritoSerializer
     search_fields = ['=owner__id','=activo']
     filter_backends = (filters.SearchFilter,)
+
+
+class Detalle_CarritoViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.DjangoModelPermissions,)
+    queryset = Detalle_Carrito.objects.all().order_by('-id')
+    serializer_class = Detalle_CarritoSerializer
+    search_fields = ['=codigo__id']
+    filter_backends = (filters.SearchFilter,)
