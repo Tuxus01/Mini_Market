@@ -214,38 +214,6 @@
 
 
 
-
-
-<!--Presentacion Categoria tabla relacionada de componentes -->
-{% if lists == "VentasOnline"%}
-
-<table id="example1" class="table table-sm">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Serie</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Presentacion</th>
-      <th scope="col">Precio Venta</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for i in RELACION %}
-    <tr>
-      <th scope="row">{{ i.id }}</th>
-      <td><a href="{% url 'base:update' 'Componente' i.id %}">{{ i.componente.serie}}</a></td>
-      <td>{{ i.componente.nombre}}</td>
-      <td>{{ i.componente.presentacion.nombre}}</td>
-      <td>{{ i.precio_v}}</td>
-    </tr>
-   {% endfor %}
-  </tbody>
-</table> 
-{% endif %}
-<!--Presentacion Categoria tabla relacionada de componentes -->
-
-
-
 {% endblock %}
 
 

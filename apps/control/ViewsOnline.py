@@ -655,7 +655,7 @@ def carrito_check(request):
         comentario = ""
     
     if envio_id == 1:
-        print("Guardamos la informacion de envio")
+        #print("Guardamos la informacion de envio")
         guardar_envio.codigo = paypal_fin #Instancia de pago final
         guardar_envio.owner = request.user
         guardar_envio.nombre = nombre
@@ -665,7 +665,7 @@ def carrito_check(request):
         guardar_envio.direccion2 = comentario
         guardar_envio.email = correo
         guardar_envio.save()
-        print("Direccion guardada")
+        #print("Direccion guardada")
         return HttpResponseRedirect('/store/carrito/check')
 
     if pago_id > 0:

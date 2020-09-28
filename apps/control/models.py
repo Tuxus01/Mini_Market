@@ -463,4 +463,7 @@ class Detalle_envio(ModelBase):
     email = models.EmailField('Correo Electronico', blank=True, null=True)
     email2 = models.EmailField('Correo Electronico', blank=True, null=True)
 
+    #def __str__(self):
+    #    return self.codigo
+
     

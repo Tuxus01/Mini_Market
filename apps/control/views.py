@@ -611,6 +611,7 @@ def Create(request, Model):
 @method_decorator(csrf_exempt)
 def Update(request, Model, id):
     relacion = ""
+    envio =""
     totalcRentabilidad = 0
     taltavRentabilidad = 0
     totalcProveedor = 0 
@@ -690,6 +691,15 @@ def Update(request, Model, id):
         p = Ventas.objects.get(pk=id)
         form = VentasForm(instance=p)
         tablename = "Ventas"
+
+    if Model == "VentasOnline":
+        p = Carrito.objects.get(pk=id)
+        form = CarritoForm(instance=p)
+        tablename = "VentasOnline"
+        #print("VENTASONLINE")
+        #envio = Detalle_envio.objects.filter(owner=p.owner).last()
+        #print(envio)
+        relacion = Detalle_Carrito.objects.filter(codigo=p)
     
 
     
@@ -715,6 +725,8 @@ def Update(request, Model, id):
             form = ComprasForm(request.POST,request.FILES,instance=p)
         if Model == "Ventas":
             form = VentasForm(request.POST,request.FILES,instance=p)
+        if Model == "VentasOnline":
+            form = CarritoForm(request.POST,request.FILES,instance=p)
        
 
     if form.is_valid():
@@ -753,8 +765,21 @@ def Update(request, Model, id):
             form.total = total
             form.subtotal = subtotal
             
+        #Proceso de envio de correo al generar cambio en el modelo.
+        if Model== "VentasOnline":
+            """print("Enviar correo electronico")
+            if form.pago == 1:
+                pago = "Pagar al Entregar"
+            if form.pago == 2:
+                pago = "Tigo Money"
+            if form.pago == 3:
+                pago = "Transferencia Bancaria"
+            if form.pago == 4:
+                pago = "Paypal"
 
-
+            print(form.owner) """
+            SendEmailT= SendEmailOnlineThread(form.id, request.user,form.pago,form.estado)
+            SendEmailT.start()
         
         #form.save_m2m()
         
@@ -777,6 +802,9 @@ def Update(request, Model, id):
         ids = id
         ctx = {'form':form , 'tablename': tablename , 'lists' : Model ,'detalle':detalle,'ID':ids ,'P':p}
         return render(request, 'base/create_venta.html' , ctx)
+    
+   
+
     if Model== "Componente":
         ctx = {'form':form , 'tablename': tablename , 'lists' : Model ,'RELACION' : relacion, 'VENTAS' : ventas, 'COMPRAS': compras, 'RENTABILIDAD': rentabilidad,'RENTABILIDADGLOBAL': retabilidadGlobal}
         return render(request, 'base/create.html' , ctx)
