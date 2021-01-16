@@ -32,14 +32,14 @@ class SendEmailThread(threading.Thread):
         detalle = DetalleVentas.objects.filter(ventas=ordenventa.id)
         #print(detalle)
         cliente = ordenventa.cliente.email
-        #subject, from_email, to = 'Compra al Credito', 'ngdz01@gmail.com', 'tuxus01@gmail.com'
+        #subject, from_email, to = 'Compra al Credito', 'email@gmail.com', 'tuxus01@gmail.com'
         #msg = EmailMultiAlternatives(subject, from_email, [to])
         html_content = loader.render_to_string('base/SendEmail.html', {'VENTA':ordenventa, 'DETALLE':detalle})
         #msg.attach_alternative(html_content, "text/html")
         #msg.send()
 
         #Envio de Email
-        subject, from_email, to = 'Compra al Credito', 'ngdz01@gmail.com', str(cliente)
+        subject, from_email, to = 'Compra al Credito', 'email@gmail.com', str(cliente)
         #text_content = 'Compra : {0} <br> Por el monto total 100.00 <br> '.format(self.Nombre_camara)
         #html_content = '<p>Se autorizo compra al credio al numero de factura: {0} </p> '.format(self.Nombre_camara)
         msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
@@ -69,7 +69,7 @@ class SendEmailAbonoThread(threading.Thread):
         #msg.send()
 
         #Envio de Email
-        subject, from_email, to = 'Compra al Credito', 'ngdz01@gmail.com', str(cliente)
+        subject, from_email, to = 'Compra al Credito', 'email@gmail.com', str(cliente)
         #text_content = 'Compra : {0} <br> Por el monto total 100.00 <br> '.format(self.Nombre_camara)
         #html_content = '<p>Se autorizo compra al credio al numero de factura: {0} </p> '.format(self.Nombre_camara)
         msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
@@ -99,7 +99,7 @@ class SendEmailInfoThread(threading.Thread):
         #msg.send()
 
         #Envio de Email
-        subject, from_email, to = 'Alerta de productos bajos', 'ngdz01@gmail.com','ngdz01@gmail.com'
+        subject, from_email, to = 'Alerta de productos bajos', 'email@gmail.com','email@gmail.com'
         #text_content = 'Compra : {0} <br> Por el monto total 100.00 <br> '.format(self.Nombre_camara)
         html_content = 'Informando que solo quedan - {0} {1}  '.format(self.cantidad,self.producto)
         msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
@@ -156,7 +156,7 @@ class SendEmailOnlineThread(threading.Thread):
         #msg.send()
 
         #Envio de Email
-        subject, from_email, to = 'Orden Online', 'ngdz01@gmail.com', str(cliente.email)
+        subject, from_email, to = 'Orden Online', 'email@gmail.com', str(cliente.email)
         #text_content = 'Compra : {0} <br> Por el monto total 100.00 <br> '.format(self.Nombre_camara)
         #html_content = '<p>Se autorizo compra al credio al numero de factura: {0} </p> '.format(self.Nombre_camara)
         msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
@@ -203,7 +203,7 @@ class SendEmailOnlineChangeStatusThread(threading.Thread):
         #msg.send()
 
         #Envio de Email
-        subject, from_email, to = 'Orden Online', 'ngdz01@gmail.com', str(cliente.email)
+        subject, from_email, to = 'Orden Online', 'email@gmail.com', str(cliente.email)
         #text_content = 'Compra : {0} <br> Por el monto total 100.00 <br> '.format(self.Nombre_camara)
         #html_content = '<p>Se autorizo compra al credio al numero de factura: {0} </p> '.format(self.Nombre_camara)
         msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
