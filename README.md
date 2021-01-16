@@ -10,16 +10,16 @@ App Ventas Local/Online
 # Modulos dentro del proyecto.
 
 # App
-    * Productos
+    * Productos / Inventario
         * Presentacion
         * Categoria
         * Sub Categoria
         * Color
         * Talla
-    * Ingreso
+    * Ingreso De Compras
         * Proveedores
         * Compras
-    * Ventas
+    * Ventas De Inventario
         * Cliente
         * Ventas
         * Cuentas Por Cobrar
