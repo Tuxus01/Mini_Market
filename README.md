@@ -1,12 +1,11 @@
 # Mini_Market
 App Ventas Local/Online
 
-Proyecto desarrollado en Python/Django.
-
-Virtualenv env
-cd env/Script
-activate
-pip3 install -r requeriment.txt
+# Proyecto desarrollado en Python/Django.
+   * Virtualenv env
+   * cd env/Script
+   * activate
+   * pip3 install -r requeriment.txt
 
 # Modulos dentro del proyecto.
 
