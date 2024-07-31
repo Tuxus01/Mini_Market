@@ -5,7 +5,8 @@ App Ventas Local/Online
    * Virtualenv env
    * cd env/Script
    * activate
-   * pip3 install -r requeriment.txt
+   * pip install -r requeriment.txt
+   * python manage.py runserver
 
 # Modulos dentro del proyecto.
 
